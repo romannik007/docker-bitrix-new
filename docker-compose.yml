@@ -71,6 +71,28 @@ services:
       #redis-server /etc/redis.conf #!!!!!!!!!добавить
       #command: sh -c "mkdir /var/run/httpd;/usr/sbin/httpd -D FOREGROUND;nginx -g "daemon on;""
 
+    push:
+      image: romannik/bitrix:bitrix-base-new
+      #image: bitrix-base-image:new
+      container_name: bx-push
+      hostname: push
+#      ports:
+#        - 80:80
+      networks:
+        - bitrix
+#          ipv4_address: 172.16.16.4
+#      depends_on:
+#        - web
+#      volumes:
+#        - ./bitrix/www/:/home/bitrix/www/
+      privileged: true
+      cap_add:
+        - SYS_ADMIN
+      security_opt:
+        - seccomp:unconfined
+      #command: sh -c 'mkdir /opt/push-server/logs;node /opt/push-server/server.js --config /opt/push-server/config/config-docker.json;/etc/init.d/push-server-multi start;/usr/bin/redis-server /etc/redis.conf --daemonize no'
+      #entrypoint: "/root/entry-web.sh"
+
     redis:
       image: redis:latest
       container_name: bx-redis
