@@ -83,15 +83,15 @@ services:
 #          ipv4_address: 172.16.16.4
 #      depends_on:
 #        - web
-#      volumes:
-#        - ./bitrix/www/:/home/bitrix/www/
+      volumes:
+        - ./bitrix/backup:/home/bitrix/www/backup
       privileged: true
       cap_add:
         - SYS_ADMIN
       security_opt:
         - seccomp:unconfined
       #command: sh -c 'mkdir /opt/push-server/logs;node /opt/push-server/server.js --config /opt/push-server/config/config-docker.json;/etc/init.d/push-server-multi start;/usr/bin/redis-server /etc/redis.conf --daemonize no'
-      #entrypoint: "/root/entry-web.sh"
+      entrypoint: "/root/entry-push.sh"
 
     redis:
       image: redis:latest

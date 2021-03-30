@@ -1,9 +1,11 @@
 #!/bin/bash
 chmod +x ./entry-web.sh
 chmod +x ./entry-mysql.sh
+chmod +x ./entry-push.sh
 docker start bitrix-new
 docker cp ./entry-web.sh bitrix-new:/root/
 docker cp ./entry-mysql.sh bitrix-new:/root/
+docker cp ./entry-push.sh bitrix-new:/root/
 docker exec -d bitrix-new sh -c "mkdir /opt/push-server/logs;exit"
 docker exec -d bitrix-new sh -c "yum -y clean all;exit"
 docker stop bitrix-new
