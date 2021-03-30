@@ -13,6 +13,8 @@ docker cp ./bitrix/nginx-config/rtc-im_subscrider.conf bitrix-new:/etc/nginx/bx/
 echo rtc-im_subscrider.conf
 docker cp ./bitrix/push-config/push-server-multi bitrix-new:/etc/sysconfig/push-server-multi
 echo push-server-multi
+docker exec bitrix-new sh -c "/etc/init.d/push-server-multi reset;exit"
+docker exec bitrix-new sh -c "systemctl enable push-server;exit
 docker exec bitrix-new sh -c "systemctl disable --now mysql;exit"
 docker exec bitrix-new sh -c "systemctl disable --now httpd;exit"
 docker exec bitrix-new sh -c "systemctl disable --now httpd-scale;exit"

@@ -91,20 +91,6 @@ services:
       #command: sh -c 'mkdir /opt/push-server/logs;node /opt/push-server/server.js --config /opt/push-server/config/config-docker.json;/etc/init.d/push-server-multi start;/usr/bin/redis-server /etc/redis.conf --daemonize no'
       #command: "/root/entry-push.sh"
 
-    redis:
-      image: redis:latest
-      container_name: bx-redis
-      hostname: redis
-      ports:
-        - "6379:6379"
-      container_name: bx-redis
-#      volumes:
-#        - ./redis/data:/var/lib/redis
-#        - ./redis/conf/:/usr/local/etc/
-#    environment:
-#      TZ: ${WORKSPACE_TIMEZONE}
-      networks:
-        - bitrix
 
 networks:
   bitrix:
