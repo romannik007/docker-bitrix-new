@@ -18,42 +18,14 @@ services:
         MYSQL_DATABASE: ${BX_MYSQL_DB}
         MYSQL_USER: bitrix
         MYSQL_PASSWORD: ${BX_MYSQL_BITRIX_PASS}
+      volumes:
+        - ./bitrix/mysql:/var/lib/mysql
       command: ['--character-set-server=utf8', '--collation-server=utf8_unicode_ci', '--skip-character-set-client-handshake', '--sql-mode=']
-
-#    mysql-push:
-#      image: romannik/bitrix:bitrix-base-new
-#      #image: bitrix-base-image:new
-#      container_name: mysql-push
-#      networks:
-#        bitrix:
-#          ipv4_address: 172.16.16.2
-#     volumes:
-#      entrypoint: "/root/entry-mysql.sh"
-#      #command: sh -c "/bin/bash"
-
-#    nginx:
-#      image: romannik/bitrix:bitrix-base-new
-#      container_name: nginx
-#      volumes:
-#          - ./bitrix/backup:/home/bitrix/www/bitrix/backup
-#      networks:
-#        bitrix:
-#          ipv4_address: 172.16.16.3
-#      entrypoint: "/root/entry-mysql.sh"
-
 
     web:
       image: romannik/bitrix:bitrix-base-new
-      #image: bitrix-base-image:new
       container_name: bx-web
       hostname: bitrix
-#      environment:
-#        - PUID=1000
-#        - PGID=1000
-#      links:
-#        - mysql
-#        - nginx
-#      	 - redis
       ports:
         - 80:80
       networks:
@@ -63,21 +35,13 @@ services:
         - mysql
       volumes:
         - ./bitrix/www/:/home/bitrix/www/
-      #command: sh -c '/etc/init.d/bvat start;/etc/init.d/push-server-multi reset;nginx -g "daemon on;";/usr/sbin/httpd;stunnel;/usr/sbin/httpd -f /etc/httpd/conf/httpd-scale.conf -D FOREGROUND'
       entrypoint: "/root/entry-web.sh"
-      #/etc/init.d/push-server-multi reset
-      #/etc/nginx/bx/settings/im_settings.conf #параметры пуш сервера
-      #node server.js --config /etc/push-server/config.json;    #!!!!!!!!!!!!!проверить
-      #redis-server /etc/redis.conf #!!!!!!!!!добавить
-      #command: sh -c "mkdir /var/run/httpd;/usr/sbin/httpd -D FOREGROUND;nginx -g "daemon on;""
 
     push:
       image: romannik/bitrix:bitrix-base-new
       #image: bitrix-base-image:new
       container_name: bx-push
       hostname: push
-#      ports:
-#        - 80:80
       networks:
         - bitrix
 #          ipv4_address: 172.16.16.4

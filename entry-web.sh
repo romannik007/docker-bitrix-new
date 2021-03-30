@@ -8,8 +8,8 @@
 #node /opt/push-server/server.js --config /opt/push-server/config/config-docker.json
 #/etc/init.d/push-server-multi start
 chmod -R /home/bitrix/www
-mkdir /tmp/php_sessions/www
-mkdir /tmp/php_upload/www
+mkdir -p /tmp/php_sessions/www
+mkdir -p /tmp/php_upload/www
 chmod -R 777 /tmp/php_sessions
 chmod -R 777 /tmp/php_upload
 rm -f /run/nginx*.pid
