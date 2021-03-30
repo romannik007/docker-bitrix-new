@@ -33,6 +33,7 @@ services:
 #          ipv4_address: 172.16.16.4
       depends_on:
         - mysql
+        - push
       volumes:
         - ./bitrix/www/:/home/bitrix/www/
       entrypoint: "/root/entry-web.sh"
@@ -45,8 +46,8 @@ services:
       networks:
         - bitrix
 #          ipv4_address: 172.16.16.4
-      depends_on:
-        - web
+#      depends_on:
+#        - web
       privileged: true
       cap_add:
         - SYS_ADMIN
