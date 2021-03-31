@@ -8,3 +8,4 @@ echo "log-error=mysql.err" >> /etc/mysql/conf.d/z_bx_custom.cnf
 echo $1
 mysql -u root -p$1 -e "GRANT ALL ON *.* TO 'root'@'%' IDENTIFIED BY '$1' WITH GRANT OPTION;"
 mysql -u root -p$1 -e "FLUSH PRIVILEGES;"
+echo
