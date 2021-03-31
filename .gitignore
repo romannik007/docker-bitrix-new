@@ -1,5 +1,3 @@
-/Копия (1) Копия (1) entrypoint.sh
-/bitrix/backup/*
-/!!!УДАЛТЬ PID FILE
-/bitrix/www/*
+bitrix/www/*
 bitrix/mysql/*
+!bitrix/*
