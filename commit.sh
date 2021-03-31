@@ -1,7 +1,7 @@
 #!/bin/bash
 chmod +x ./entry-web.sh
 chmod +x ./entry-mysql.sh
-#chmod +x ./entry-push.sh
+chmod +x ./entry-push.sh
 docker start bitrix-new
 docker cp ./entry-web.sh bitrix-new:/root/
 docker cp ./entry-mysql.sh bitrix-new:/root/
@@ -14,10 +14,10 @@ echo rtc-im_subscrider.conf
 docker cp ./bitrix/push-config/push-server-multi bitrix-new:/etc/sysconfig/push-server-multi
 echo push-server-multi
 docker exec bitrix-new sh -c "/etc/init.d/push-server-multi reset;exit"
-docker exec bitrix-new sh -c "systemctl enable push-server;exit"
-docker exec bitrix-new sh -c "systemctl disable --now mysqld;exit"
-docker exec bitrix-new sh -c "systemctl disable --now httpd;exit"
-docker exec bitrix-new sh -c "systemctl disable --now httpd-scale;exit"
+#docker exec bitrix-new sh -c "systemctl enable push-server;exit"
+#docker exec bitrix-new sh -c "systemctl disable --now mysqld;exit"
+#docker exec bitrix-new sh -c "systemctl disable --now httpd;exit"
+#docker exec bitrix-new sh -c "systemctl disable --now httpd-scale;exit"
 docker exec bitrix-new sh -c "mkdir /opt/push-server/logs;exit"
 docker exec bitrix-new sh -c "yum -y clean all;exit"
 docker stop bitrix-new

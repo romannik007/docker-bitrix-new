@@ -5,5 +5,5 @@
 #systemctl disable --now httpd-scale
 #systemctl disable --now nginx
 /etc/init.d/push-server-multi start
-/usr/bin/redis-server /etc/redis.conf --daemonize now
+/usr/bin/redis-server /etc/redis.conf --daemonize no
 

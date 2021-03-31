@@ -54,6 +54,7 @@ services:
       security_opt:
         - seccomp:unconfined
       userns_mode: host
+      entrypoint: "/root/entry-push"
       #command: sh -c 'mkdir /opt/push-server/logs;node /opt/push-server/server.js --config /opt/push-server/config/config-docker.json;/etc/init.d/push-server-multi start;/usr/bin/redis-server /etc/redis.conf --daemonize no'
       #command: "/root/entry-push.sh"
 
