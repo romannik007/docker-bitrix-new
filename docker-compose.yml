@@ -18,8 +18,8 @@ services:
         MYSQL_DATABASE: ${BX_MYSQL_DB}
         MYSQL_USER: bitrix
         MYSQL_PASSWORD: ${BX_MYSQL_BITRIX_PASS}
-      volumes:
-        - ./bitrix/mysql:/var/lib/mysql
+#      volumes:
+#        - ./bitrix/mysql:/var/lib/mysql
       command: ['--character-set-server=utf8', '--collation-server=utf8_unicode_ci', '--skip-character-set-client-handshake', '--sql-mode=']
 
     web:
