@@ -35,7 +35,7 @@ services:
         - mysql
         - push
       volumes:
-        - ./bitrix/www/:/home/bitrix/www/
+        - ./bitrix/www/:/home/bitrix/www/:Z
       entrypoint: "/root/entry-web.sh"
 
     push:
