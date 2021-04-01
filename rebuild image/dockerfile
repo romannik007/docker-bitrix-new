@@ -9,7 +9,7 @@ FROM romannik/bitrix:bitrix-base-new
   ADD rtc-server.conf /etc/nginx/bx/site_enabled/rtc-server.conf
   ADD rtc-im_settings.conf /etc/nginx/bx/settings/rtc-im_settings.conf
   ADD rtc-im_subscrider.conf /etc/nginx/bx/conf/rtc-im_subscrider.conf
-  ADD nginx.conf /etc/nginx/nginx.conf
+  ADD redis.conf /etc/redis/redis.conf
   ADD push-server-multi bitrix-new:/etc/sysconfig/push-server-multi
   RUN /etc/init.d/push-server-multi reset
   RUN mkdir -p /opt/push-server/logs
