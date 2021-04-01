@@ -5,8 +5,9 @@ FROM centos:7
   ADD ./custom.conf /etc/systemd/system/redis.service.d/custom.conf
   RUN yum -y update
   RUN curl --silent --location https://rpm.nodesource.com/setup_8.x | bash -
-  RUN yum -y install gcc-c++ make 
-  RUN yum -y install nodejs
-  RUN yum -y install bx-push-server
-  ENTRYPOINT [ "/etc/init.d/push-server-multi","start" ]
-  CMD [ "/usr/bin/redis-server /etc/redis.conf --daemonize no" ]
+  RUN yum install -y gcc-c++ make 
+  RUN yum install -y nodejs mc sudo
+  RUN yum install -y bx-push-server
+  RUN /etc/init.d/push-server-multi reset
+  ENTRYPOINT [ "/etc/init.d/push-server-multi","start"]
+  CMD [ "/usr/bin/redis-server", "/etc/redis.conf", "--daemonize no" ]
