@@ -10,6 +10,8 @@ docker cp ./bitrix/nginx-config/rtc-server.conf bitrix-new:/etc/nginx/bx/site_en
 echo rtc-server.conf
 docker cp ./bitrix/nginx-config/rtc-im_settings.conf bitrix-new:/etc/nginx/bx/settings/rtc-im_settings.conf
 echo rtc-im_settings.conf
+docker cp ./bitrix/nginx-config/nginx.conf bitrix-new:/etc/nginx/nginx.conf
+echo nginx.conf
 docker cp ./bitrix/nginx-config/rtc-im_subscrider.conf bitrix-new:/etc/nginx/bx/conf/rtc-im_subscrider.conf
 echo rtc-im_subscrider.conf
 docker cp ./bitrix/push-config/push-server-multi bitrix-new:/etc/sysconfig/push-server-multi
