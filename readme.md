@@ -24,33 +24,33 @@
 
   
    - в /etc/subgid и /etc/subuid
+      
       *<свое имя пользователя в системе>:<ID>:65536*
-      *<свое имя пользователя в системе>:100000:65536*
+
       где *<ID> = id* пользователя в системе минус id пользователя bitrix в контейнере (почти всегда 600)
 
       **пример**: у меня пользователь user2 uid=1000 и gid=1000
                  
          /etc/subuid
             user2:400:65536 
-          user2:100000:65536                
-        
+                     
          /etc/subgid
             user2:400:65536 
-            user2:100000:65536
+            
          
-
-7. *sudo service docker restart*
+7. ***sudo service docker restart***
    (все контейнеры и образы, созданные под предыдущим uid и gid, не будут видны)
-8. *chmod -R 777 ./bitrix/mysql*
-9.  *docker-compose up -d --build*
+8. ***chmod -R 777 ./bitrix/mysql***
+9.  ***docker-compose up -d --build --force-recreate***
 10.  **копируем** bitrixsetup.php в папку ./bitrix/www
 11. **входим** в вэбку http://127.0.0.1/bitrixsetup.php
-12. **или** распаковываем свой проект
+12. Так как при настройке push servera файл .settings.php не сохраняется, то заранее заменяем его (КЛЮЧ УЖЕ ПРОПИСАН)
+13. **или** распаковываем свой проект
 
 **Дополнительно**:
 - в файле .env содержаться данные для подключения к mysql
 - адрес сервера БД - mysql (указываем для подключения)
 - commit_push - для создания образа из контейнера с установленной средой и push в нужный реестр
-- *docker-compose up -d --build*  - запуск только первый раз, далее уже запускаем *docker-compose up -d bitrix* (вэбка доступна по порту 80 или 443, mysql - 3306)
+- *docker-compose up -d --build --force-recreate*  - запуск только первый раз, далее уже запускаем *docker-compose up -d* или *docker-compose start* (вэбка доступна по порту 80 или 443, mysql - 3306)
 - *docker exec -ti <сервис> /bin/bash* - подключиться к контенеру в баш )
 - папка *rebuild image* - для ребюлда готового образа или внесения изменений
