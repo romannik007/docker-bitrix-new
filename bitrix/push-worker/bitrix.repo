@@ -1,0 +1,7 @@
+[bitrix]
+name=$OS $releasever - $basearch
+failovermethod=priority
+baseurl=http://repos.1c-bitrix.ru/yum/el/$releasever/$basearch
+enabled=1
+gpgcheck=1
+gpgkey=http://repos.1c-bitrix.ru/yum/RPM-GPG-KEY-BitrixEnv

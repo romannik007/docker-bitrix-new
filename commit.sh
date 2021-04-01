@@ -5,6 +5,7 @@ chmod +x ./entry-push.sh
 docker start bitrix-new
 docker cp ./entry-web.sh bitrix-new:/root/
 docker cp ./entry-mysql.sh bitrix-new:/root/
+docker cp ./entry-push.sh bitrix-new:/root/
 docker cp ./bitrix/nginx-config/rtc-server.conf bitrix-new:/etc/nginx/bx/site_enabled/rtc-server.conf
 echo rtc-server.conf
 docker cp ./bitrix/nginx-config/rtc-im_settings.conf bitrix-new:/etc/nginx/bx/settings/rtc-im_settings.conf
