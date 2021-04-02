@@ -2,7 +2,7 @@ version: '3.3'
 services:
     mysql:
       image: percona/percona-server:5.7
-      container_name: bx-mysql
+      #container_name: bx-mysql
       hostname: mysql
       healthcheck:
         test: "/usr/bin/mysql --user=root --password=${BX_MYSQL_ROOT_PASS} --execute \"SHOW DATABASES;\""
@@ -27,7 +27,7 @@ services:
         context: "./"
         dockerfile: dockerfile
       #image: romannik/bitrix:bitrix-base-new
-      container_name: bx-web
+      #container_name: bx-web
       hostname: bitrix
       ports:
         - 80:80
@@ -46,7 +46,7 @@ services:
       build:
         context: "./"
         dockerfile: dockerfile
-      container_name: bx-push
+      #container_name: bx-push
       hostname: push
 #      ports:
 #        - 8010:8010
