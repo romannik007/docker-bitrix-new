@@ -21,6 +21,7 @@ rm -f /run/nginx*.pid
 rm -f /etc/httpd/run/*.pid
 rm -f /run/httpd/*.pid
 mkdir /var/run/httpd
+/usr/sbin/crond
 /usr/sbin/httpd
 /usr/sbin/httpd -f /etc/httpd/conf/httpd-scale.conf -D FOREGROUND
 #cron -n

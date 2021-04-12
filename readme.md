@@ -44,7 +44,7 @@
          
 8. ***sudo service docker restart***
    (все контейнеры и образы, созданные под предыдущим uid и gid, не будут видны)
-9. ***chmod -R 777 ./bitrix/mysql***
+9. ***mkdir -m 777 -p ./bitrix/mysql***
 10. ***docker-compose up -d --build --force-recreate***
 11.  **копируем** bitrixsetup.php из в папку ./bitrix/www или восстанавливаем свой проект.
 12.  **Если установка производится из скрипта bitrixsetup.php, то после установки сайта подменяем .settings.php из bitrix/bitrix-set/, пункты  13 и 14  не выполняем.**

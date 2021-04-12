@@ -2,10 +2,10 @@
 mysql_root_pass='admin'
 chmod +x ./bitrix-env.sh
 chmod +x ./mysql.sh
-mkdir -p ./bitrix/local
-mkdir -p ./bitrix/backup
-mkdir -p ./bitrix/mysql
-mkdir -p ./bitrix/www
+mkdir -m 777 -p ./bitrix/local
+mkdir -m 777 -p ./bitrix/backup
+mkdir -m 777 -p ./bitrix/mysql
+mkdir -m 777 -p ./bitrix/www
 docker build --no-cache -t  bitrix:new .
 docker stop bitrix-new
 docker rm bitrix-new
