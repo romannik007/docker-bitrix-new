@@ -7,8 +7,9 @@ OS=$(awk '{print $1}' $RELEASE_FILE)
 MYSQL_CNF=$HOME/.my.cnf
 DEFAULT_SITE=/home/bitrix/www
 POOL=0
-CONFIGURE_IPTABLES=0
+CONFIGURE_IPTABLES=1
 CONFIGURE_FIREWALLD=0
+MYVERSION="5.7"     # default mysql version
 [[ -z $SILENT ]] && SILENT=0
 [[ -z $TEST_REPOSITORY ]] && TEST_REPOSITORY=0
 
@@ -82,7 +83,9 @@ MBE0023="Disable php 5.6 repository"
 MBE0024="Disable php 7.0 repository"
 # Включение php 7.1 репозитория
 MBE0025="Disable php 7.1 repository"
-MBE00251="Enable php 7.2 repository"
+MBE00251="Disable php 7.2 repository"
+MBE00252="Enable php 7.3 repository"
+
 
 # Функция подключения REMI репозитория
 # Репозиторий уже подключен на сервере
@@ -206,6 +209,11 @@ MBE0083="Cannot create management pool. Log file: "
 MBE0084="Management pool has been configured."
 # Установка Битрикс окружения завершена
 MBE0085="Bitrix Environment $BX_PACKAGE has been installed successfully."
+# Выбор версии mysql сервера при установке
+MBE0086="Select MySQL version: 5.7 or 8.0 (Version 5.7 is default).
+              The option is not working on CentOS 6."
+
+MBE0087="There is no support Percona Server 8.0 for Centos 6. Exit."
 }
 
 # common subs
@@ -227,21 +235,24 @@ print_e(){
 
 
 help_message(){
-    echo <<EOF
-    Usage: $0 [-s] [-t] [-p [-H hostname]] [-M mysql_root_password]
+
+    echo "
+    Usage: $0 [-h] [-s] [-t] [-p [-H hostname]] [-M mysql_root_password] [-m 5.7|8.0]
          -p - $MBE0002
          -s - $MBE0003
          -H - $MBE0004
          -M - $MBE0005
+         -m - $MBE0086
          -t - $MBE0006
          -I - $MBE0007
          -F - $MBE0008
+         -h - ptint help messager
     $MBE0009:
          * $MBE0010
          $0 -s -p -H master1
          * $MBE0011
-         $0 -s -p -H master1 -M 'password'
-EOF
+         $0 -s -p -H master1 -M 'password' -m 8.0"
+    exit
 }
 
 disable_selinux(){
@@ -294,7 +305,7 @@ configure_epel(){
 
     # install packages
     yum clean all >/dev/null 2>&1 
-    yum install -y yum-fastestmirror ## >/dev/null 2>&1
+    yum install -y yum-fastestmirror >/dev/null 2>&1
 
     print "$MBE0021" 1
 }
@@ -314,7 +325,11 @@ pre_php(){
     sed -i -e '/\[remi-php71\]/,/^\[/s/enabled=1/enabled=0/' /etc/yum.repos.d/remi-php71.repo
 
     print "$MBE00251"
-    sed -i -e '/\[remi-php72\]/,/^\[/s/enabled=0/enabled=1/' /etc/yum.repos.d/remi-php72.repo
+    sed -i -e '/\[remi-php72\]/,/^\[/s/enabled=1/enabled=0/' /etc/yum.repos.d/remi-php72.repo
+
+    print "$MBE00252"
+    sed -i -e '/\[remi-php73\]/,/^\[/s/enabled=0/enabled=1/' /etc/yum.repos.d/remi-php73.repo
+
 
     is_xhprof=$(rpm -qa | grep -c php-pecl-xhprof)
     if [[ $is_xhprof -gt 0 ]]; then
@@ -366,10 +381,16 @@ configure_percona(){
 
     yum -y --nogpg update percona-release >> $LOGS_FILE 2>&1
     print "$MBE0033" 1
+
+    if [[ $MYVERSION == "8.0" || $MYVERSION == "80" ]]; then
+        percona-release enable ps-80 release
+    else
+        percona-release setup -y ps57
+    fi
 }
 
 configure_nodejs(){
-    curl --silent --location https://rpm.nodesource.com/setup_8.x | bash - >>$LOGS_FILE 2>&1
+    curl --silent --location https://rpm.nodesource.com/setup_10.x | bash - >>$LOGS_FILE 2>&1
 
     if [[ $IS_CENTOS73 -gt 0 ]]; then
         rpm -ivh \
@@ -463,7 +484,7 @@ configure_bitrix(){
 
     # get GPG key
     print "$MBE0039" 1
-    GPGK="http://repos.1c-bitrix.ru/yum/RPM-GPG-KEY-BitrixEnv"
+    GPGK="https://repos.1c-bitrix.ru/yum/RPM-GPG-KEY-BitrixEnv"
     rpm --import "$GPGK" >>$LOGS_FILE 2>&1 || \
         print_e "$MBE0040 $GPGK"
 
@@ -472,7 +493,7 @@ configure_bitrix(){
     echo "[$REPONAME]" > $REPOF
     echo "name=\$OS \$releasever - \$basearch" >> $REPOF
     echo "failovermethod=priority" >> $REPOF
-    echo "baseurl=http://repos.1c-bitrix.ru/$REPO/el/$VER/\$basearch" >> $REPOF
+    echo "baseurl=https://repos.1c-bitrix.ru/$REPO/el/$VER/\$basearch" >> $REPOF
     echo "enabled=1" >> $REPOF
     echo "gpgcheck=1" >> $REPOF
     echo "gpgkey=$GPGK" >> $REPOF
@@ -517,7 +538,7 @@ ask_for_password(){
 update_mysql_rootpw(){
     # update root password
     esc_pass=$(basic_single_escape "$MYSQL_ROOTPW")
-    if [[ $MYSQL_MID_VERSION -gt 5 ]]; then
+    if [[ $MYSQL_UNI_VERSION -ge 57 ]]; then
         my_query "ALTER USER 'root'@'localhost' IDENTIFIED BY '$esc_pass';" \
             "$mysql_update_config"
         my_query_rtn=$?
@@ -545,6 +566,8 @@ update_mysql_rootpw(){
 }
 
 configure_mysql_passwords(){
+    # MYSQL_UNI_VERSION
+    # MYSQL_MID_VERSION
     [[ -z $MYSQL_VERSION  ]] && \
         get_mysql_package
 
@@ -552,13 +575,13 @@ configure_mysql_passwords(){
     my_start
 
     log_to_file \
-        "$MBE0052 $MYSQL_VERSION($MYSQL_MID_VERSION)"
+        "$MBE0052 $MYSQL_VERSION($MYSQL_UNI_VERSION)"
 
     ASK_USER_FOR_PASSWORD=0
     # not found default my.cnf file
     if [[ ! -f $MYSQL_CNF  ]]; then
         log_to_file "$MBE0053 $MYSQL_CNF"
-        if [[ $MYSQL_MID_VERSION -eq 7 ]]; then
+        if [[ $MYSQL_UNI_VERSION -ge 57  ]]; then
             MYSQL_LOG_FILE=/var/log/mysqld.log
             MYSQL_ROOTPW=$(grep 'temporary password' $MYSQL_LOG_FILE | awk '{print $NF}')
             MYSQL_ROOTPW_TYPE=temporary
@@ -666,7 +689,7 @@ configure_mysql_passwords(){
             MYSQL_ROOTPW="${MYPASSWORD}"
             update_mysql_rootpw
         else
-            if [[  ( $SILENT -eq 0 ) && ( $MYSQL_MID_VERSION -eq 7 ) ]]; then
+            if [[  ( $SILENT -eq 0 ) && ( $MYSQL_UNI_VERSION -ge 57 ) ]]; then
                 print "$MBE0066" 1
                 print "$MBE0067" 2
             fi
@@ -679,6 +702,25 @@ configure_mysql_passwords(){
 
 }
 
+os_version(){
+    # testing Centos vesrion
+    IS_CENTOS7=$(grep -c 'CentOS Linux release' $RELEASE_FILE)
+    IS_CENTOS73=$(grep -c "CentOS Linux release 7.3" $RELEASE_FILE)
+    IS_X86_64=$(uname -p | grep -wc 'x86_64')
+    if [[ $IS_CENTOS7 -gt 0 ]]; then
+        VER=$(awk '{print $4}' $RELEASE_FILE | awk -F'.' '{print $1}')
+    else
+        VER=$(awk '{print $3}' $RELEASE_FILE | awk -F'.' '{print $1}')
+    fi
+    if [[ $BX_PACKAGE == "bitrix-env-crm" ]]; then
+        [[ ( $VER -eq 7 ) ]] || \
+            print_e "$MBE0075 $VER."
+    else
+        [[ ( $VER -eq 7 ) || ( $VER -eq 6 ) ]] || \
+            print_e "$MBE0075 $VER."
+    fi
+}
+
 bitrix_env_vars
 
 # testing effective UID
@@ -689,16 +731,27 @@ bitrix_env_vars
 [[ $OS != "CentOS" ]] && \
     print_e "$MBE0070"
 
+# get OS version
+os_version
+
 # get cmd options
-while getopts ":H:M:sptIF" opt; do
+while getopts ":H:M:m:sptIFh" opt; do
     case $opt in
         "H") HOSTIDENT="${OPTARG}" ;;
         "M") MYPASSWORD="${OPTARG}" ;;
+        "m") 
+            MYVERSION="${OPTARG}"
+            if [[ $VER == "6" && (  $MYVERSION == '8.0' || $MYVERSION == '80' ) ]]; then
+                print_e "$MBE0087"
+            fi
+            ;;
         "s") SILENT=1 ;;
         "p") POOL=1 ;;
         "t") TEST_REPOSITORY=2 ;;
         "I") CONFIGURE_IPTABLES=1 ; CONFIGURE_FIREWALLD=0 ;;
         "F") CONFIGURE_IPTABLES=0 ; CONFIGURE_FIREWALLD=1 ;;
+        "h") help_message;;
+        *)  help_message;;
     esac
 done
 
@@ -715,24 +768,6 @@ if [[ $SILENT -eq 0 ]]; then
 else
     ASK_USER=0
 fi
-
-# testing Centos vesrion
-IS_CENTOS7=$(grep -c 'CentOS Linux release' $RELEASE_FILE)
-IS_CENTOS73=$(grep -c "CentOS Linux release 7.3" $RELEASE_FILE)
-IS_X86_64=$(uname -p | grep -wc 'x86_64')
-if [[ $IS_CENTOS7 -gt 0 ]]; then
-    VER=$(awk '{print $4}' $RELEASE_FILE | awk -F'.' '{print $1}')
-else
-    VER=$(awk '{print $3}' $RELEASE_FILE | awk -F'.' '{print $1}')
-fi
-if [[ $BX_PACKAGE == "bitrix-env-crm" ]]; then
-    [[ ( $VER -eq 7 ) ]] || \
-        print_e "$MBE0075 $VER."
-else
-    [[ ( $VER -eq 7 ) || ( $VER -eq 6 ) ]] || \
-        print_e "$MBE0075 $VER."
-fi
-
 
 disable_selinux
 
@@ -763,36 +798,37 @@ yum -y install php php-mysql \
 
 if [[ $BX_PACKAGE == "bitrix-env-crm" ]]; then
     print "$MBE0078" 1
+    yum -y install redis >>$LOGS_FILE 2>&1
     yum -y install bx-push-server  >>$LOGS_FILE 2>&1 || \
         print_e "$MBE0079 bx-push-server"
 fi
 
 print "$MBE0077" 1
-yum -y install $BX_PACKAGE >>$LOGS_FILE || \
+yum -y install $BX_PACKAGE >>$LOGS_FILE 2>&1 || \
     print_e "$MBE0079 $BX_PACKAGE"
 
 # upload bitrix proc
-. /opt/webdir/bin/bitrix_utils.sh #|| exit 1
+. /opt/webdir/bin/bitrix_utils.sh || exit 1
 
 configure_mysql_passwords
 
 update_crypto_key
 
-#configure_firewall_daemon "$CONFIGURE_IPTABLES" "$CONFIGURE_FIREWALLD"
-#configure_firewall_daemon_rtn=$?
-#if [[ $configure_firewall_daemon_rtn -eq 255 ]]; then
-#    if [[ ( $BX_PACKAGE == "bitrix-env-crm" ) || ( $POOL -gt 0 ) ]]; then
-#        print "$MBE0080" 2
-#    else
-#        print_e "$MBE0080"
-#    fi
-#elif [[ $configure_firewall_daemon_rtn -gt 0 ]]; then
-#    if [[ ( $BX_PACKAGE == "bitrix-env-crm" ) || ( $POOL -gt 0 ) ]]; then
-#        print "$MBE0081 $LOGS_FILE" 2
-#    else
-#        print_e "$MBE0081 $LOGS_FILE"
-#    fi
-#fi
+configure_firewall_daemon "$CONFIGURE_IPTABLES" "$CONFIGURE_FIREWALLD"
+configure_firewall_daemon_rtn=$?
+if [[ $configure_firewall_daemon_rtn -eq 255 ]]; then
+    if [[ ( $BX_PACKAGE == "bitrix-env-crm" ) || ( $POOL -gt 0 ) ]]; then
+        print "$MBE0080" 2
+    else
+        print_e "$MBE0080"
+    fi
+elif [[ $configure_firewall_daemon_rtn -gt 0 ]]; then
+    if [[ ( $BX_PACKAGE == "bitrix-env-crm" ) || ( $POOL -gt 0 ) ]]; then
+        print "$MBE0081 $LOGS_FILE" 2
+    else
+        print_e "$MBE0081 $LOGS_FILE"
+    fi
+fi
 print "$MBE0082" 1
  
 # default configuration for host
@@ -807,4 +843,4 @@ if [[ ( $BX_PACKAGE == "bitrix-env-crm" ) || ( $POOL -gt 0 ) ]]; then
 fi
 
 print "$MBE0085" 1
-[[ $TEST_REPOSITORY -eq 0 ]] #&& rm -f $LOGS_FILE
+[[ $TEST_REPOSITORY -eq 0 ]] && rm -f $LOGS_FILE

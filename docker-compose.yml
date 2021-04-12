@@ -36,7 +36,7 @@ services:
         - push
       volumes:
         - ./bitrix/www/:/home/bitrix/www
-      entrypoint: "/root/entry-web.sh"
+      command: ["/root/entry-web.sh"]
 
     push:
       image: romannik/bitrix:bitrix-base-new
@@ -55,7 +55,7 @@ services:
       security_opt:
         - seccomp:unconfined
       #userns_mode: host
-      entrypoint: "/root/entry-push.sh"
+      command: ["/root/entry-push.sh"]
       #command: sh -c 'mkdir /opt/push-server/logs;node /opt/push-server/server.js --config /opt/push-server/config/config-docker.json;/etc/init.d/push-server-multi start;/usr/bin/redis-server /etc/redis.conf --daemonize no'
       #command: "/root/entry-push.sh"
 

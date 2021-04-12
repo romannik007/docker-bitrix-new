@@ -21,7 +21,7 @@ docker exec bitrix-new sh -c "/etc/init.d/push-server-multi reset;exit"
 #docker exec bitrix-new sh -c "systemctl disable --now mysqld;exit"
 #docker exec bitrix-new sh -c "systemctl disable --now httpd;exit"
 #docker exec bitrix-new sh -c "systemctl disable --now httpd-scale;exit"
-docker exec bitrix-new sh -c "mkdir /opt/push-server/logs;exit"
+docker exec bitrix-new sh -c "mkdir -p /opt/push-server/logs;exit"
 docker exec bitrix-new sh -c "yum -y clean all;exit"
 docker stop bitrix-new
 docker commit bitrix-new romannik/bitrix:bitrix-base-new
