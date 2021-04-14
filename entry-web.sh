@@ -1,13 +1,5 @@
 #!/bin/bash
-#redis-server /etc/redis.conf
-#mkdir /var/run/mysqld
-#mkdir /opt/push-server/logs
-#chown -R mysql:mysql /var/run/mysqld
-#mysqld --daemonize
-#/usr/bin/redis-server /etc/redis.conf --daemonize yes
-#node /opt/push-server/server.js --config /opt/push-server/config/config-docker.json
-#/etc/init.d/push-server-multi start
-#chmod -R 777 /home/bitrix/www
+
 mkdir -p /tmp/php_sessions/www
 mkdir -p /tmp/php_upload/www
 chmod -R 777 /tmp/php_sessions

@@ -1,10 +1,8 @@
 #!/bin/bash
 chmod +x ./entry-web.sh
-chmod +x ./entry-mysql.sh
 chmod +x ./entry-push.sh
 docker start bitrix-new
 docker cp ./entry-web.sh bitrix-new:/root/
-docker cp ./entry-mysql.sh bitrix-new:/root/
 docker cp ./entry-push.sh bitrix-new:/root/
 docker cp ./bitrix/nginx-config/rtc-server.conf bitrix-new:/etc/nginx/bx/site_enabled/rtc-server.conf
 echo rtc-server.conf
