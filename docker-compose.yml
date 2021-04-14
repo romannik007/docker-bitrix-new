@@ -36,6 +36,7 @@ services:
         - push
       volumes:
         - ./bitrix/www/:/home/bitrix/www
+        - ./bitrix/cron/:/var/spool/cron
       command: ["/root/entry-web.sh"]
 
     push:
