@@ -28,6 +28,7 @@ services:
       hostname: bitrix
       ports:
         - 80:80
+        - 443:443
       networks:
         - bitrix
 #          ipv4_address: 172.16.16.4
