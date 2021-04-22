@@ -40,7 +40,6 @@ services:
         - push
       volumes:
         - ./bitrix/www/:/home/bitrix/www
-        - ./bitrix/cron/:/var/spool/cron
         - ./bitrix/supervisor/web:/etc/supervisord.d
         - ./bitrix/logs:/var/log/
       command: ["/root/entry-web.sh"]
