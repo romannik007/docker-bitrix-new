@@ -23,7 +23,10 @@ services:
       command: ['--innodb_strict_mode=OFF','--character-set-server=utf8', '--collation-server=utf8_unicode_ci', '--skip-character-set-client-handshake', '--sql-mode=']
 
     web:
-      image: romannik/bitrix:bitrix-base-new
+      build:
+        context: "./"
+        dockerfile: Dockerfile.b
+      #image: romannik/bitrix:bitrix-base-new
       #container_name: bx-web
       hostname: bitrix
       ports:
@@ -38,10 +41,15 @@ services:
       volumes:
         - ./bitrix/www/:/home/bitrix/www
         - ./bitrix/cron/:/var/spool/cron
+        - ./bitrix/supervisor/web:/etc/supervisord.d
+        - ./bitrix/logs:/var/log/
       command: ["/root/entry-web.sh"]
 
     push:
-      image: romannik/bitrix:bitrix-base-new
+      build:
+        context: "./"
+        dockerfile: Dockerfile.b
+      #image: romannik/bitrix:bitrix-base-new
       #container_name: bx-push
       hostname: push
 #      ports:
@@ -57,9 +65,10 @@ services:
       security_opt:
         - seccomp:unconfined
       #userns_mode: host
+      volumes:
+        - ./bitrix/supervisor/push:/etc/supervisord.d
       command: ["/root/entry-push.sh"]
-      #command: sh -c 'mkdir /opt/push-server/logs;node /opt/push-server/server.js --config /opt/push-server/config/config-docker.json;/etc/init.d/push-server-multi start;/usr/bin/redis-server /etc/redis.conf --daemonize no'
-      #command: "/root/entry-push.sh"
+      
 
 
 networks:

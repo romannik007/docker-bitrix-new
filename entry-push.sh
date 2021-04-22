@@ -1,6 +1,5 @@
 #!/bin/bash
 
-/etc/init.d/push-server-multi reset
-/etc/init.d/push-server-multi start
-exec /usr/bin/redis-server /etc/redis.conf --daemonize no
 
+mkdir -p /opt/push-server/logs
+exec /usr/bin/supervisord # -c /etc/supervisor.d/supervisord.conf

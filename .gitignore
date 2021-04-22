@@ -1,5 +1,6 @@
-bitrix/www*
-bitrix/mysql*
+bitrix/www/*
+bitrix/mysql/*
+bitrix/logs/*
 
 docker-bitrix-new.zip
 bitrix-base-new

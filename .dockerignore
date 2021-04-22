@@ -1,3 +1,5 @@
-bitrix/*
+bitrix/www/*
+bitrix/mysql/*
+bitrix/logs/*
 rebuild*
 .git
