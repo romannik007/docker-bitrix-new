@@ -15,6 +15,7 @@ COPY ./bitrix/push-config/push-server-multi /etc/sysconfig/push-server-multi
 COPY ./bitrix/php/php.d/z_bx_custom.ini /etc/php.d/z_bx_custom.ini
 COPY ./bitrix/nginx-config/z_bx_custom.conf /etc/nginx/bx/settings/z_bx_custom.conf
 COPY ./bitrix/apache/z_bx_custom.conf /etc/httpd/bx/custom/z_bx_custom.conf
-COPY ./bitrix/cron/root /var/spool/cron/root
+COPY ./bitrix/cron/bitrix /etc/cron.d/bitrix
+#COPY ./bitrix/cron/bitrix /var/spool/cron/crontabs/bitrix
 
 #echo push-server-multi
