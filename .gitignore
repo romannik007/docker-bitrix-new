@@ -5,3 +5,4 @@ bitrix/logs/*
 docker-bitrix-new.zip
 bitrix-base-new
 tmp.Dockerfile
+docker-bitrix-new
