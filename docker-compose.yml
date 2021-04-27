@@ -41,7 +41,7 @@ services:
       volumes:
         - ./bitrix/www/:/home/bitrix/www
         - ./bitrix/supervisor/web:/etc/supervisord.d
-        - ./bitrix/logs:/var/log/
+        - ./bitrix/logs:/var/log
         #- ./bitrix/cron/ /etc/cron.d/
       command: ["/root/entry-web.sh"]
 
