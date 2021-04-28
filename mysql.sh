@@ -1,4 +1,4 @@
-!#/bin/bash
+#!/bin/bash
 echo "[mysqld]"
 echo "[mysqld]" >> /etc/mysql/conf.d/z_bx_custom.cnf
 echo ";" >> /etc/httpd/bx/custom/z_bx_custom.conf
