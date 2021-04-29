@@ -17,4 +17,5 @@ mkdir -p /var/log/supervisor
 mkdir -p /var/log/crond
 mkdir -p /var/log/httpd
 mkdir -p /var/log/nginx
+mount -t cifs $4 /home/bitrix/www -o user=$3@$1%$2
 exec /usr/bin/supervisord #-c /etc/supervisor.d/supervisord.conf
