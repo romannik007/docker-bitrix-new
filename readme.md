@@ -48,24 +48,25 @@
    (все контейнеры и образы, созданные под предыдущим uid и gid, не будут видны)
 9.  ***`mkdir -m 777 -p ./bitrix/mysql`***
 10. ***`docker-compose up -d --build --force-recreate`***
-11. выполняем ***`docker-compose -f docker-compose-smb.yml up -d --build --force-recreate`***
-12.  **копируем** bitrixsetup.php из в папку ./bitrix/www или восстанавливаем свой проект.
+11. Прописываем данные для поключения к шаре windows в файле .env
+12. ***`docker-compose -f docker-compose-smb.yml up -d --build --force-recreate`***
+13.  **копируем** bitrixsetup.php из в папку ./bitrix/www или восстанавливаем свой проект.
     
       **`chmod -R 777 bitrix/www`**
 
       в windows нет необходимости выпонять
 
-13.  **Если установка производится из скрипта bitrixsetup.php, то после установки сайта подменяем .settings.php из bitrix/bitrix-set/, пункты  13 и 14  не выполняем.**
+14.  **Если установка производится из скрипта bitrixsetup.php, то после установки сайта подменяем .settings.php из bitrix/bitrix-set/, пункты  13 и 14  не выполняем.**
       Данные для подключения к БД пописаны в .env
       
-14. **входим** в вэбку http://127.0.0.1/bitrixsetup.php 
-15. в файле .settings.php в проекте прописываем данные для соединения с БД и ключ вставляем такой: 
+15. **входим** в вэбку http://127.0.0.1/bitrixsetup.php 
+16. в файле .settings.php в проекте прописываем данные для соединения с БД и ключ вставляем такой: 
 
       *'signature_key' => 'bVQdNsrRsulOnj9lkI0sPim292jMtrnji0zzEl5MzCBeHT7w1E5HL3aihFb6aiFJfNEIDxmcFrowS3PTLZFDxAfuNNuCN5EcFRaveaUaRZHSThtWKV7Vp5vGbz9kb3cN'*
 
       пример .settings.php в папке bitrix/bitrix-set/
 
-      в файле dbconn.php указываем также свои данные для подключения 
+      **Настройки в новом ядре выполняются в файле /bitrix/.settings.php. Напомним, что в старом ядре аналогичные настройки выполнялись в файле /bitrix/php_interface/dbconn.php. Файл .settings.php структурно сильно отличается от прежнего dbconn.php.**
 
       **Если push&pull не работает, необходимо пересохранить настройки в модуле push&pull выбрав 2 пункт  и потом 4-й**
 
