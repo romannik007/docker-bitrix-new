@@ -10,7 +10,8 @@ services:
         timeout: 20s
         retries: 10
       networks:
-        - bitrix
+        bitrix:
+          ipv4_address: 172.16.16.4
       ports:
         - "3306:3306"
       environment:
@@ -29,17 +30,23 @@ services:
       #image: romannik/bitrix:bitrix-base-new
       #container_name: bx-web
       hostname: bitrix
+      extra_hosts:
+        - dockerhost:172.16.16.1
       ports:
         - 8080:80
         - 443:443
+        #- 135:135/tcp
+        #- 137:137/udp
+        #- 139:139/tcp
+        #- 445:445/tcp
       networks:
-        - bitrix
-          #ipv4_address: 172.16.16.4
+        bitrix:
+          ipv4_address: 172.16.16.2
       #network_mode: host
       depends_on:
         - mysql
         - push
-      privileged: true
+      #privileged: true
       cap_add:
         - SYS_ADMIN
         - DAC_READ_SEARCH
@@ -49,7 +56,6 @@ services:
         #- ./bitrix/www/:/home/bitrix/www
         - ./bitrix/supervisor/web:/etc/supervisord.d
         - ./bitrix/logs:/var/log
-        #- ./bitrix/cron/ /etc/cron.d/
       command: ['/root/entry-web.sh', '$SMB_USERNAME', '$SMB_PASSWORD', '$SMB_DOMAIN', '$SMB_NET_ADDR', '$SMB_PATH']
 
     push:
@@ -62,8 +68,8 @@ services:
 #      ports:
 #        - 8010:8010
       networks:
-        - bitrix
-          #ipv4_address: 172.16.16.4
+        bitrix:
+          ipv4_address: 172.16.16.3
 #      depends_on:
 #        - web
       #privileged: true
@@ -79,11 +85,10 @@ services:
 networks:
   bitrix:
     name: bitrix_net
-    driver: bridge
-    
-   # ipam:
-    #  config:
-     #   - subnet: $SMB_NET_ADDR/24
-      #  - gateway: 172.16.16.1
+    #driver: default
+    ipam:
+      config:
+        - subnet: 172.16.16.0/24 #$SMB_NET_ADDR/24
+          gateway: 172.16.16.1
 
     
