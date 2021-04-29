@@ -10,7 +10,7 @@
 5. **commit.sh** - для создания образа из контейнера с установленной средой (впоследствии из него запускаем новый контейнер с пробросом нужных папок)
 6. **Теперь** образ необходимо поместить в реестр или сохранить в файл коммандой `docker save -o bitrix-base-new`
    и затем его восстановить `docker load -i bitrix-base-new` 
-7. **Этот пункт только для linux** 
+7. **пункты с 7 по 10 только для linux** 
    **Чтобы** работало редактирование файлов в проекте и на хосте и в контейнере:
    - исправляем файл или создаем /etc/docker/daemon.json:
       
@@ -48,19 +48,24 @@
    (все контейнеры и образы, созданные под предыдущим uid и gid, не будут видны)
 9.  ***`mkdir -m 777 -p ./bitrix/mysql`***
 10. ***`docker-compose up -d --build --force-recreate`***
-11.  **копируем** bitrixsetup.php из в папку ./bitrix/www или восстанавливаем свой проект.
+11. выполняем ***`docker-compose -f docker-compose-smb.yml up -d --build --force-recreate`***
+12.  **копируем** bitrixsetup.php из в папку ./bitrix/www или восстанавливаем свой проект.
     
       **`chmod -R 777 bitrix/www`**
 
-12.  **Если установка производится из скрипта bitrixsetup.php, то после установки сайта подменяем .settings.php из bitrix/bitrix-set/, пункты  13 и 14  не выполняем.**
+      в windows нет необходимости выпонять
+
+13.  **Если установка производится из скрипта bitrixsetup.php, то после установки сайта подменяем .settings.php из bitrix/bitrix-set/, пункты  13 и 14  не выполняем.**
       Данные для подключения к БД пописаны в .env
       
-13. **входим** в вэбку http://127.0.0.1/bitrixsetup.php 
-14. в файле .settings.php в проекте прописываем данные для соединения с БД и ключ вставляем такой: 
+14. **входим** в вэбку http://127.0.0.1/bitrixsetup.php 
+15. в файле .settings.php в проекте прописываем данные для соединения с БД и ключ вставляем такой: 
 
       *'signature_key' => 'bVQdNsrRsulOnj9lkI0sPim292jMtrnji0zzEl5MzCBeHT7w1E5HL3aihFb6aiFJfNEIDxmcFrowS3PTLZFDxAfuNNuCN5EcFRaveaUaRZHSThtWKV7Vp5vGbz9kb3cN'*
 
       пример .settings.php в папке bitrix/bitrix-set/
+
+      в файле dbconn.php указываем также свои данные для подключения 
 
       **Если push&pull не работает, необходимо пересохранить настройки в модуле push&pull выбрав 2 пункт  и потом 4-й**
 
