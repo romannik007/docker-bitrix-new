@@ -34,7 +34,7 @@ services:
         - 443:443
       networks:
         - bitrix
-#          ipv4_address: 172.16.16.4
+          #ipv4_address: 172.16.16.4
       depends_on:
         - mysql
         - push
@@ -43,7 +43,7 @@ services:
         - ./bitrix/supervisor/web:/etc/supervisord.d
         - ./bitrix/logs:/var/log
         #- ./bitrix/cron/ /etc/cron.d/
-      command: ["/root/entry-web.sh $SMB_USERNAME $SMB_PASSWORD $SMB_DOMAIN $SMB_PATH"]
+      command: ["/root/entry-web.sh $SMB_USERNAME $SMB_PASSWORD $SMB_DOMAIN $SMB_NET_ADDR $SMB_PATH"]
 
     push:
       build:
@@ -56,10 +56,10 @@ services:
 #        - 8010:8010
       networks:
         - bitrix
-#          ipv4_address: 172.16.16.4
+          #ipv4_address: 172.16.16.4
 #      depends_on:
 #        - web
-#      privileged: true
+      privileged: true
       cap_add:
         - SYS_ADMIN
       security_opt:
@@ -69,13 +69,11 @@ services:
         - ./bitrix/supervisor/push:/etc/supervisord.d
       command: ["/root/entry-push.sh"]
       
-
-
 networks:
   bitrix:
-#    name: bitrix_net
-#    ipam:
-#      config:
-#        - subnet: 172.16.16.0/24
+    name: bitrix_net
+    ipam:
+      config:
+        - subnet: $SMB_NET_ADDR/24
 
     
