@@ -18,8 +18,8 @@ services:
         MYSQL_DATABASE: ${BX_MYSQL_DB}
         MYSQL_USER: bitrix
         MYSQL_PASSWORD: ${BX_MYSQL_BITRIX_PASS}
-      volumes:
-        - ./bitrix/mysql:/var/lib/mysql
+      #volumes:
+      #  - ./bitrix/mysql:/var/lib/mysql
       command: ['--innodb_strict_mode=OFF','--character-set-server=utf8', '--collation-server=utf8_unicode_ci', '--skip-character-set-client-handshake', '--sql-mode=']
 
     web:
@@ -30,20 +30,27 @@ services:
       #container_name: bx-web
       hostname: bitrix
       ports:
-        - 80:80
+        - 8080:80
         - 443:443
       networks:
         - bitrix
           #ipv4_address: 172.16.16.4
+      #network_mode: host
       depends_on:
         - mysql
         - push
+      privileged: true
+      cap_add:
+        - SYS_ADMIN
+        - DAC_READ_SEARCH
+      security_opt:
+        - seccomp:unconfined
       volumes:
         #- ./bitrix/www/:/home/bitrix/www
         - ./bitrix/supervisor/web:/etc/supervisord.d
         - ./bitrix/logs:/var/log
         #- ./bitrix/cron/ /etc/cron.d/
-      command: ["/root/entry-web.sh $SMB_USERNAME $SMB_PASSWORD $SMB_DOMAIN $SMB_NET_ADDR $SMB_PATH"]
+      command: ['/root/entry-web.sh', '$SMB_USERNAME', '$SMB_PASSWORD', '$SMB_DOMAIN', '$SMB_NET_ADDR', '$SMB_PATH']
 
     push:
       build:
@@ -59,7 +66,7 @@ services:
           #ipv4_address: 172.16.16.4
 #      depends_on:
 #        - web
-      privileged: true
+      #privileged: true
       cap_add:
         - SYS_ADMIN
       security_opt:
@@ -72,8 +79,11 @@ services:
 networks:
   bitrix:
     name: bitrix_net
-    ipam:
-      config:
-        - subnet: $SMB_NET_ADDR/24
+    driver: bridge
+    
+   # ipam:
+    #  config:
+     #   - subnet: $SMB_NET_ADDR/24
+      #  - gateway: 172.16.16.1
 
     

@@ -1,6 +1,6 @@
 FROM romannik/bitrix:bitrix-base-new
 RUN yum install -y epel-release supervisor && yum install -y supervisor
-RUN yum -y install cifs-utils
+RUN yum -y install cifs-utils samba-client
 COPY entry-push.sh /root/entry-push.sh
 COPY entry-web.sh /root/entry-web.sh
 RUN chmod +x /root/entry-web.sh && chmod +x /root/entry-push.sh
