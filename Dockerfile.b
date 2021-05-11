@@ -15,6 +15,7 @@ COPY ./bitrix/nginx-config/rtc-im_subscrider.conf /etc/nginx/bx/conf/rtc-im_subs
 COPY ./bitrix/push-config/push-server-multi /etc/sysconfig/push-server-multi
 COPY ./bitrix/php/php.d/z_bx_custom.ini /etc/php.d/z_bx_custom.ini
 COPY ./bitrix/nginx-config/z_bx_custom.conf /etc/nginx/bx/settings/z_bx_custom.conf
+COPY ./bitrix/nginx-config/http-add_header.conf  /etc/nginx/bx/conf/http-add_header.conf 
 COPY ./bitrix/apache/z_bx_custom.conf /etc/httpd/bx/custom/z_bx_custom.conf
 COPY ./bitrix/cron/bitrix /etc/cron.d/bitrix
 COPY ./bitrix/smb/smb.conf /etc/samba
