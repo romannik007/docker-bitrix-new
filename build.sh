@@ -1,6 +1,6 @@
 #!/bin/bash
 mysql_root_pass='admin'
-mkdir -m 777 -p ./bitrix/local
+mkdir -m 777 -p ./bitrix/app
 mkdir -m 777 -p ./bitrix/backup
 mkdir -m 777 -p ./bitrix/mysql
 mkdir -m 777 -p ./bitrix/www

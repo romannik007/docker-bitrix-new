@@ -53,7 +53,7 @@ services:
       security_opt:
         - seccomp:unconfined
       volumes:
-        #- ./bitrix/www/:/home/bitrix/www
+        - ./bitrix/www/app:/home/bitrix/www/app
         - ./bitrix/supervisor/web:/etc/supervisord.d
         - ./bitrix/logs:/var/log
       command: ['/root/entry-web.sh', '$SMB_USERNAME', '$SMB_PASSWORD', '$SMB_DOMAIN', '$SMB_NET_ADDR', '$SMB_PATH']
@@ -89,6 +89,6 @@ networks:
     ipam:
       config:
         - subnet: 172.16.16.0/24 #$SMB_NET_ADDR/24
-          gateway: 172.16.16.1
+#          gateway: 172.16.16.1
 
     
