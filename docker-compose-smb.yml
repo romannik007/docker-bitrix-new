@@ -54,6 +54,7 @@ services:
         - seccomp:unconfined
       volumes:
         - ./bitrix/www/app:/home/bitrix/www/app
+        - ./bitrix/www/backup:/home/bitrix/www/backup
         - ./bitrix/supervisor/web:/etc/supervisord.d
         - ./bitrix/logs:/var/log
       command: ['/root/entry-web.sh', '$SMB_USERNAME', '$SMB_PASSWORD', '$SMB_DOMAIN', '$SMB_NET_ADDR', '$SMB_PATH']
