@@ -3,3 +3,5 @@ bitrix/mysql/*
 bitrix/logs/*
 rebuild*
 .git
+bitrix-base-new-backup*
+bitrix-base-new-mysql-backup*
