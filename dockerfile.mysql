@@ -1,0 +1,5 @@
+FROM percona/percona-server:5.7
+USER root 
+RUN mkdir -p /mysql && chown -R mysql:mysql /mysql
+COPY ./bitrix/mysqld.cnf /etc/percona-server.conf.d/mysqld.cnf
+user mysql
