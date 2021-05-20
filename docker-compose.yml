@@ -1,10 +1,10 @@
 version: '3.3'
 services:
     mysql:
-      #image: percona/percona-server:5.7
-      build: 
-        context: ./
-        dockerfile: dockerfile.mysql
+      image: percona/percona-server:5.7
+      #build: 
+      #  context: ./
+      #  dockerfile: dockerfile.mysql
       #container_name: bx-mysql
       hostname: mysql
       healthcheck:
