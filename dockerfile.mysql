@@ -1,5 +1,7 @@
 FROM percona/percona-server:5.7
 USER root 
 RUN mkdir -p /mysql && chown -R mysql:mysql /mysql
-COPY ./bitrix/mysqld.cnf /etc/percona-server.conf.d/mysqld.cnf
+# изменил расположение файлов БД для того, чтобы базы сохранялись в образе
+# так как по стандартному пути mysql перезаписывает базы
+COPY ./bitrix/mysqld.cnf /etc/percona-server.conf.d/mysqld.cnf 
 user mysql

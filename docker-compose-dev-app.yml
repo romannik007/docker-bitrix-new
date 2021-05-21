@@ -1,11 +1,9 @@
 version: '3.3'
 services:
     mysql:
-      #image: percona/percona-server:5.7
       build:
         context: "./"
         dockerfile: Dockerfile-mysql.backup
-      #container_name: bx-mysql
       hostname: mysql
       healthcheck:
         test: "/usr/bin/mysql --user=root --password=${BX_MYSQL_ROOT_PASS} --execute \"SHOW DATABASES;\""
@@ -14,7 +12,6 @@ services:
         retries: 10
       networks:
         bitrix:
-          #ipv4_address: 172.16.16.4
       ports:
         - "3306:3306"
       environment:
@@ -30,26 +27,15 @@ services:
       build:
         context: "./"
         dockerfile: Dockerfile-web.backup
-      #image: romannik/bitrix:bitrix-base-new
-      #container_name: bx-web
       hostname: bitrix
-      #extra_hosts:
-        #- dockerhost:172.16.16.1
       ports:
         - 80:80
         - 443:443
-        #- 135:135/tcp
-        #- 137:137/udp
-        #- 139:139/tcp
-        #- 445:445/tcp
       networks:
         bitrix:
-          #ipv4_address: 172.16.16.2
-      #network_mode: host
       depends_on:
         - mysql
         - push
-      #privileged: true
       cap_add:
         - SYS_ADMIN
         - DAC_READ_SEARCH
@@ -66,33 +52,18 @@ services:
       build:
         context: "./"
         dockerfile: Dockerfile.b
-      #image: romannik/bitrix:bitrix-base-new
-      #container_name: bx-push
       hostname: push
-#      ports:
-#        - 8010:8010
       networks:
         bitrix:
-          #ipv4_address: 172.16.16.3
-#      depends_on:
-#        - web
-      #privileged: true
       cap_add:
         - SYS_ADMIN
       security_opt:
         - seccomp:unconfined
-      #userns_mode: host
       volumes:
         - ./bitrix/supervisor/push:/etc/supervisord.d
       command: ["/root/entry-push.sh"]
       
 networks:
   bitrix:
-    #name: bitrix_net
-    #driver: default
-    #ipam:
-      #config:
-        #- subnet: 172.16.16.0/24 #$SMB_NET_ADDR/24
-#          gateway: 172.16.16.1
 
     

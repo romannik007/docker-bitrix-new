@@ -1,6 +1,7 @@
 bitrix/www/*
 bitrix/mysql/*
 bitrix/logs/*
+bitrix/backup
 rebuild*
 .git
 bitrix-base-new-backup*
