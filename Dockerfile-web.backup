@@ -1,4 +1,4 @@
-FROM romannik/bitrix:bitrix-base-new-backup
+FROM romannik/bitrix-base-new-backup
 
 
 #COPY ./bitrix/cron/bitrix /var/spool/cron/crontabs/bitrix
