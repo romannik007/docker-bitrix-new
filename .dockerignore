@@ -1,8 +1,11 @@
 bitrix/www/*
 bitrix/mysql/*
 bitrix/logs/*
-bitrix/backup
+bitrix/backup/*
 rebuild*
 .git
 bitrix-base-new-backup*
 bitrix-base-new-mysql-backup*
+*.zip
+*.7z
+*.gz

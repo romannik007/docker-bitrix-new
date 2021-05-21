@@ -24,3 +24,6 @@ docker-bitrix-new
 !*/.gitkeep
 bitrix-base-new-backup*
 bitrix-base-new-mysql-backup*
+*.zip
+*.7z
+*.gz
