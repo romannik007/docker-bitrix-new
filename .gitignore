@@ -1,12 +1,12 @@
-bitrix/app
+bitrix/app/*
 !bitrix/app/.gitkeep
-bitrix/www
+bitrix/www/*
 !bitrix/www/.gitkeep
-bitrix/mysql
+bitrix/mysql/*
 !bitrix/mysql/.gitkeep
-bitrix/logs
+bitrix/logs/*
 !bitrix/logs/.gitkeep
-bitrix/backup
+bitrix/backup/*
 !bitrix/backup/.gitkeep
 docker-bitrix-new.zip
 bitrix-base-new
