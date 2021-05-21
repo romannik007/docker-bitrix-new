@@ -1,5 +1,5 @@
 !bitrix/apache
-!bitrix/app
+bitrix/app/*
 bitrix/backup/*
 !bitrix/bitrix-set
 !bitrix/cron
