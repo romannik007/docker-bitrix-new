@@ -1,4 +1,4 @@
-в скрипте отключил удаление логов и настройку фаервола, так как в докер его не устанавливал
+
 Выполнять в следующей последовательности:
 
 **Сразу можно приступать с пункта 7, так как образ загрузится из https://hub.docker.com**
@@ -8,8 +8,18 @@
 3. **выполнить** установоку push&pull nodejs через меню - это 9 пункт (обязательно дождаться установки. Процесс можно наблюдать в top или в пунктах меню)
 4. **выйти** из контейнера
 5. **commit.sh** - для создания образа из контейнера с установленной средой (впоследствии из него запускаем новый контейнер с пробросом нужных папок)
-6. **Теперь** образ необходимо поместить в реестр или сохранить в файл коммандой `docker save -o bitrix-base-new`
-   и затем его восстановить `docker load -i bitrix-base-new` 
+6. **Теперь** образ необходимо поместить в реестр или сохранить в файл коммандой 
+   
+   ```
+   docker save -o bitrix-base-new
+   ```
+   
+   и затем его восстановить
+   
+   ```
+   docker load -i bitrix-base-new
+   ```
+
 7. **пункты с 7 по 10 только для linux** 
    **Чтобы** работало редактирование файлов в проекте и на хосте и в контейнере:
    - исправляем файл или создаем /etc/docker/daemon.json:
@@ -42,19 +52,55 @@
                      
          /etc/subgid
             user2:400:65536 
+
+
+   **Также необходимо выполнить**
+   https://sylabs.io/guides/3.8/admin-guide/user_namespace.html#user-namespace-requirements
+
+   Debian   
+
+      ```bash
+      sudo sh -c 'echo kernel.unprivileged_userns_clone=1 \
+          >/etc/sysctl.d/90-unprivileged_userns.conf'
+      sudo sysctl -p /etc/sysctl.d /etc/sysctl.d/90-unprivileged_userns.conf
+      ```
+
+   RHEL/CentOS 7
+
+      From 7.4, kernel support is included but must be enabled with:
+
+
+      ```bash
+      sudo sh -c 'echo user.max_user_namespaces=15000 \
+          >/etc/sysctl.d/90-max_net_namespaces.conf'
+      sudo sysctl -p /etc/sysctl.d /etc/sysctl.d/90-max_net_namespaces.conf
+      ```
+
             
          
-8. ***sudo service docker restart***
+8. ```
+   sudo service docker restart
+   ```
+   
    (все контейнеры и образы, созданные под предыдущим uid и gid, не будут видны)
-9.  ***`mkdir -m 777 -p ./bitrix/mysql`***
-10. ***`docker-compose up -d --build --force-recreate`***
+9.  ```
+    mkdir -m 777 -p ./bitrix/mysql
+    ```
+10. ```
+    docker-compose up -d --build --force-recreate
+    ```
 11. Прописываем данные для поключения к шаре windows в файле .env
-12. ***`docker-compose -f docker-compose-smb.yml up -d --build --force-recreate`***
+12. ```
+    docker-compose -f docker-compose-smb.yml up -d --build --force-recreate
+    ```
 13.  **копируем** bitrixsetup.php из в папку ./bitrix/www или восстанавливаем свой проект.
     
-      **`chmod -R 777 bitrix/www`**
+      ```
+      chmod -R 777 bitrix/www
+      ```
 
       в windows нет необходимости выпонять
+      
 
 14.  **Если установка производится из скрипта bitrixsetup.php, то после установки сайта подменяем .settings.php из bitrix/bitrix-set/, пункты  13 и 14  не выполняем.**
       Данные для подключения к БД пописаны в .env
@@ -79,6 +125,23 @@
 - логи apache, nginx и cron в папке bitrix/logs
 - адрес сервера БД - **mysql** (указываем для подключения)
 - commit_push - для создания образа из контейнера с установленной средой и push в нужный реестр
-- ***`docker-compose up -d --build --force-recreate`***  - запуск только первый раз, далее уже запускаем *docker-compose up -d* или ***`docker-compose start`*** (вэбка доступна по порту 80 или 443, mysql - 3306)
-- ***`docker exec -ti <сервис> /bin/bash`*** - подключиться к контенеру в баш )
+- запуск только первый раз
+  ```
+  docker-compose up -d --build --force-recreate
+  ```  
+  далее уже запускаем 
+  ```
+  docker-compose up -d
+  ``` 
+  или 
+  ```
+  docker-compose start
+  ```  
+   (вэбка доступна по порту 80 или 443, mysql - 3306)
+
+- подключиться к контенеру в баш )
+   ```
+   docker exec -ti <сервис> /bin/bash
+   ``` 
+
 
