@@ -45,7 +45,7 @@ services:
       volumes:
         - ./bitrix/www/:/home/bitrix/www
         - ./bitrix/supervisor/web:/etc/supervisord.d
-        - ./bitrix/logs:/var/log
+        - ./bitrix/logs/web:/var/log
         #- ./bitrix/cron/ /etc/cron.d/
       command: ["/root/entry-web.sh"]
 
@@ -70,6 +70,7 @@ services:
         - seccomp:unconfined
       #userns_mode: host
       volumes:
+        - ./bitrix/logs/push:/var/log
         - ./bitrix/supervisor/push:/etc/supervisord.d
       command: ["/root/entry-push.sh"]
       
