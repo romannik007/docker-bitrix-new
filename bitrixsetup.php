@@ -1,4 +1,4 @@
-<?
+<?php
 ########## Proxy config ######
 $proxyAddr = "";
 $proxyPort = "";
@@ -11,9 +11,9 @@ header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 header("Expires: 0");
 header("Pragma: public");
 
-error_reporting(E_ALL &~ E_NOTICE);
-if(version_compare(phpversion(), '5.3.0') == -1)
-	die('PHP 5.3.0 or higher is required!');
+error_reporting(E_ALL & ~E_NOTICE);
+if(version_compare(phpversion(), '7.3.0') == -1)
+	die('PHP 7.3.0 or higher is required!');
 
 if(!function_exists('gzopen'))
 	die('zlib module is not installed!');
@@ -22,15 +22,16 @@ ob_implicit_flush(true);
 set_time_limit(1800);
 define('TIMEOUT',10);
 
+$lang = 'en';
 if (@preg_match('#ru#i',$_SERVER['HTTP_ACCEPT_LANGUAGE']))
 	$lang = 'ru';
 elseif (@preg_match('#de#i',$_SERVER['HTTP_ACCEPT_LANGUAGE']))
 	$lang = 'de';
 
-if ($_REQUEST['lang'])
+if (isset($_REQUEST['lang']))
 	$lang = $_REQUEST['lang'];
 
-if (!in_array($lang,array('ru','en','de')))
+if (!in_array($lang, array('ru','en','de')))
 	$lang = 'en';
 
 define("LANG", $lang);
@@ -50,8 +51,8 @@ if (!defined("BX_DIR_PERMISSIONS"))
 if (!defined("BX_FILE_PERMISSIONS"))
 	define("BX_FILE_PERMISSIONS", 0644);
 
-$strAction = $_REQUEST["action"];
-$edition = $_REQUEST['edition'];
+$strAction = $_REQUEST["action"] ?? '';
+$edition = $_REQUEST['edition'] ?? 0;
 
 if ($short = (getenv('BITRIX_ENV_TYPE') == 'crm'))
 {
@@ -444,7 +445,7 @@ if ($strAction=="LIST")
 	$arLocalDistribs_tmp = array();
 
 	$handle = opendir($_SERVER["DOCUMENT_ROOT"]);
-	if ($_REQUEST['test'] && $handle)
+	if (isset($_REQUEST['test']) && $_REQUEST['test'] && $handle)
 	{
 		while (false !== ($ffile = readdir($handle)))
 		{
@@ -769,7 +770,7 @@ function LoadFile($strRequestedUrl, $strFilename, $iTimeOut)
 		if (!$useproxy)
 		{
 			$host = $parsedurl["host"];
-			$port = $parsedurl["port"];
+			$port = $parsedurl["port"] ?? null;
 			$hostname = $host;
 		}
 		else
@@ -797,7 +798,7 @@ function LoadFile($strRequestedUrl, $strFilename, $iTimeOut)
 			$request = "";
 			if (!$useproxy)
 			{
-				$request .= "HEAD ".$parsedurl["path"].($parsedurl["query"] ? '?'.$parsedurl["query"] : '')." HTTP/1.0\r\n";
+				$request .= "HEAD ".$parsedurl["path"].(isset($parsedurl["query"]) ? '?'.$parsedurl["query"] : '')." HTTP/1.0\r\n";
 				$request .= "Host: $hostname\r\n";
 			}
 			else
@@ -917,7 +918,7 @@ function LoadFile($strRequestedUrl, $strFilename, $iTimeOut)
 	if (!$useproxy)
 	{
 		$host = $parsedurl["host"];
-		$port = $parsedurl["port"];
+		$port = $parsedurl["port"] ?? null;
 		$hostname = $host;
 	}
 	else
@@ -946,7 +947,7 @@ function LoadFile($strRequestedUrl, $strFilename, $iTimeOut)
 		$request = "";
 		if (!$useproxy)
 		{
-			$request .= "GET ".$parsedurl["path"].($parsedurl["query"] ? '?'.$parsedurl["query"] : '')." HTTP/1.0\r\n";
+			$request .= "GET ".$parsedurl["path"].(isset($parsedurl["query"]) ? '?'.$parsedurl["query"] : '')." HTTP/1.0\r\n";
 			$request .= "Host: $hostname\r\n";
 		}
 		else
@@ -1519,7 +1520,7 @@ function html($ar)
 						</td>
 					</tr>
 					<tr>
-						<td style="font-size:10pt" valign="<?=$ar['TEXT_ALIGN']?$ar['TEXT_ALIGN']:'middle'?>"><?=$ar['TEXT']?></td>
+						<td style="font-size:10pt" valign="<?=($ar['TEXT_ALIGN'] ?? 'middle')?>"><?=$ar['TEXT']?></td>
 					</tr>
 					<tr>
 						<td style="font-size:10pt; padding-top: 20px" valign="middle" align="center" height="40px"><?=$ar['BOTTOM']?></td>
@@ -2099,4 +2100,3 @@ function EscapePHPString($str)
 	$str = str_replace("\"", "\\"."\"", $str);
 	return $str;
 }
-?>

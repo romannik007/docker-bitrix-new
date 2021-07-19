@@ -71,6 +71,7 @@ services:
       #userns_mode: host
       volumes:
         - ./bitrix/supervisor/push:/etc/supervisord.d
+        #- ./bitrix/logs/push:/var/log
       command: ["/root/entry-push.sh"]
       
 
