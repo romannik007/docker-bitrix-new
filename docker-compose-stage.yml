@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.8'
 services:
     mysql:
       #image: percona/percona-server:5.7
@@ -47,7 +47,7 @@ services:
       volumes:
         - ./bitrix/www/:/home/bitrix/www
         - ./bitrix/supervisor/web:/etc/supervisord.d
-        - ./bitrix/ssl/privkey.pem:/etc/nginx/ssl/cert.pem
+        #- ./bitrix/ssl/privkey.pem:/etc/nginx/ssl/cert.pem
         - ./bitrix/logs/web:/var/log
         #- ./bitrix/cron/ /etc/cron.d/
       command: ["/root/entry-web.sh"]
@@ -76,7 +76,7 @@ services:
       volumes:
         - ./bitrix/logs/push:/var/log
         - ./bitrix/supervisor/push:/etc/supervisord.d
-        - ./bitrix/ssl/privkey.pem:/etc/nginx/ssl/cert.pem
+        #- ./bitrix/ssl/privkey.pem:/etc/nginx/ssl/cert.pem
       command: ["/root/entry-push.sh"]
       
 
