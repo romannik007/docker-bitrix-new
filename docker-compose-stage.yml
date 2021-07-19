@@ -35,7 +35,7 @@ services:
       hostname: bitrix
       ports:
         - 80:80
-        - 8895:8895
+        - 8893-8895:8893-8895/tcp
         - 443:443
       networks:
         - bitrix
@@ -60,8 +60,8 @@ services:
       #container_name: bx-push
       hostname: push
       ports:
-        - 8010-8015:8010-8015
-        - 9010-9011:9010-9011
+        - 8010-8015:8010-8015/tcp
+        - 9010-9011:9010-9011/tcp
       networks:
         - bitrix
 #          ipv4_address: 172.16.16.4
