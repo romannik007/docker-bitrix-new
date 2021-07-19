@@ -34,10 +34,11 @@ services:
       #container_name: bx-web
       hostname: bitrix
       ports:
-        - 80:80
-        - 443:443
+        - 8080:80
+      #  - 443:443
       networks:
         - bitrix
+        - docker-net
 #          ipv4_address: 172.16.16.4
       depends_on:
         - mysql
@@ -72,7 +73,6 @@ services:
       volumes:
         - ./bitrix/logs/push:/var/log
         - ./bitrix/supervisor/push:/etc/supervisord.d
-        #- ./bitrix/logs/push:/var/log
       command: ["/root/entry-push.sh"]
       
 
@@ -83,5 +83,9 @@ networks:
 #    ipam:
 #      config:
 #        - subnet: 172.16.16.0/24
+  docker-net:
+    external: true
+    name: docker-net
+
 
     
