@@ -27,3 +27,5 @@ bitrix-base-new-mysql-backup*
 *.zip
 *.7z
 *.gz
+bitrix/ssl
+!bitrix/ssl/.gitkeep

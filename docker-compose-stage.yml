@@ -34,8 +34,9 @@ services:
       #container_name: bx-web
       hostname: bitrix
       ports:
-        - 8080:80
-      #  - 443:443
+        - 80:80
+        - 8895:8895
+        - 443:443
       networks:
         - bitrix
         - docker-net
@@ -46,6 +47,7 @@ services:
       volumes:
         - ./bitrix/www/:/home/bitrix/www
         - ./bitrix/supervisor/web:/etc/supervisord.d
+        - ./bitrix/ssl/privkey.pem:/etc/nginx/ssl/cert.pem
         - ./bitrix/logs/web:/var/log
         #- ./bitrix/cron/ /etc/cron.d/
       command: ["/root/entry-web.sh"]
@@ -57,8 +59,9 @@ services:
       #image: romannik/bitrix:bitrix-base-new
       #container_name: bx-push
       hostname: push
-#      ports:
-#        - 8010:8010
+      ports:
+        - 8010-8015:8010-8015
+        - 9010-9011:9010-9011
       networks:
         - bitrix
 #          ipv4_address: 172.16.16.4
@@ -73,6 +76,7 @@ services:
       volumes:
         - ./bitrix/logs/push:/var/log
         - ./bitrix/supervisor/push:/etc/supervisord.d
+        - ./bitrix/ssl/privkey.pem:/etc/nginx/ssl/cert.pem
       command: ["/root/entry-push.sh"]
       
 

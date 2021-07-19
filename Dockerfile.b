@@ -20,7 +20,7 @@ COPY ./bitrix/apache/z_bx_custom.conf /etc/httpd/bx/custom/z_bx_custom.conf
 COPY ./bitrix/cron/bitrix /etc/cron.d/bitrix
 COPY ./bitrix/smb/smb.conf /etc/samba
 EXPOSE 135/tcp 137/udp 138/udp 139/tcp 445/tcp
-
+EXPOSE 8010-8015/tcp 9010-9011/tcp 8895/tcp
 #COPY ./bitrix/cron/bitrix /var/spool/cron/crontabs/bitrix
 
 #echo push-server-multi
