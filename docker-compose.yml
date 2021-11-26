@@ -43,6 +43,8 @@ services:
       depends_on:
         - mysql
         - push
+      environment:
+        USER_ID: $USER_ID
       volumes:
         - ./bitrix/www/:/home/bitrix/www
         - ./bitrix/supervisor/web:/etc/supervisord.d
