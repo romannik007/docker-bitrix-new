@@ -22,37 +22,10 @@
 
 7. **пункты с 7 по 10 только для linux** 
    **Чтобы** работало редактирование файлов в проекте и на хосте и в контейнере:
-   - исправляем файл или создаем /etc/docker/daemon.json:
-      
-      ```al
-      {
-          "userns-remap": "<свое имя пользователя в системе>"
-      }
-      ```
+   
+   выполним на своей системе id -u
 
-      **пример**: у меня пользователь user2
-      
-      ```al
-      {
-          "userns-remap": "user2"
-      }
-      ```
-
-  
-   - в /etc/subgid и /etc/subuid
-      
-      *<свое имя пользователя в системе>:<ID>:65536*
-
-      где *<ID> = id* пользователя в системе минус id пользователя bitrix в контейнере (почти всегда 600)
-
-      **пример**: у меня пользователь user2 uid=1000 и gid=1000
-                 
-         /etc/subuid
-            user2:400:65536 
-                     
-         /etc/subgid
-            user2:400:65536 
-
+   результат вставим в переменную USER_ID=1000 в файл .env
 
    **Также необходимо выполнить**
    https://sylabs.io/guides/3.8/admin-guide/user_namespace.html#user-namespace-requirements
@@ -76,24 +49,17 @@
       sudo sysctl -p /etc/sysctl.d /etc/sysctl.d/90-max_net_namespaces.conf
       ```
 
-            
-         
-8. ```
-   sudo service docker restart
-   ```
-   
-   (все контейнеры и образы, созданные под предыдущим uid и gid, не будут видны)
-9.  ```
+8.  ```
     mkdir -m 777 -p ./bitrix/mysql
     ```
-10. ```
+9. ```
     docker-compose up -d --build --force-recreate
     ```
-11. Прописываем данные для поключения к шаре windows в файле .env
-12. ```
+10. Прописываем данные для поключения к шаре windows в файле .env
+11. ```
     docker-compose -f docker-compose-smb.yml up -d --build --force-recreate
     ```
-13.  **копируем** bitrixsetup.php из в папку ./bitrix/www или восстанавливаем свой проект.
+12.  **копируем** bitrixsetup.php из в папку ./bitrix/www или восстанавливаем свой проект.
     
       ```
       chmod -R 777 bitrix/www
@@ -102,11 +68,11 @@
       в windows нет необходимости выпонять
       
 
-14.  **Если установка производится из скрипта bitrixsetup.php, то после установки сайта подменяем .settings.php из bitrix/bitrix-set/, пункты  13 и 14  не выполняем.**
+13.  **Если установка производится из скрипта bitrixsetup.php, то после установки сайта подменяем .settings.php из bitrix/bitrix-set/, пункты  13 и 14  не выполняем.**
       Данные для подключения к БД пописаны в .env
       
-15. **входим** в вэбку http://127.0.0.1/bitrixsetup.php 
-16. в файле .settings.php в проекте прописываем данные для соединения с БД и ключ вставляем такой: 
+14. **входим** в вэбку http://127.0.0.1/bitrixsetup.php 
+15. в файле .settings.php в проекте прописываем данные для соединения с БД: 
 
       *'signature_key' => 'bVQdNsrRsulOnj9lkI0sPim292jMtrnji0zzEl5MzCBeHT7w1E5HL3aihFb6aiFJfNEIDxmcFrowS3PTLZFDxAfuNNuCN5EcFRaveaUaRZHSThtWKV7Vp5vGbz9kb3cN'*
 
@@ -116,6 +82,8 @@
 
       **Если push&pull не работает, необходимо пересохранить настройки в модуле push&pull выбрав 2 пункт  и потом 4-й**
 
+     данные для push and pull модуля прописаны в  bitrix/bitrix-set/.settings_extra.php, 
+     можно сразу скопировать его в папку www/bitrix/www
 
 
 **Дополнительно**:

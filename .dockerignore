@@ -1,5 +1,5 @@
 bitrix/www/*
-bitrix/mysql/*
+bitrix/mysql
 bitrix/logs/*
 bitrix/backup/*
 rebuild*

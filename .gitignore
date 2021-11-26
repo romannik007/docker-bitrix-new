@@ -10,7 +10,7 @@ bitrix/mysql/*
 !bitrix/push-config
 !bitrix/smb
 !bitrix/supervisor
-bitrix/www/*
+bitrix/www
 !bitrix/app/.gitkeep
 !bitrix/www/.gitkeep
 !bitrix/mysql/.gitkeep
