@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 mkdir -p /opt/push-server/logs
 chmod -R 777 /opt/push-server/logs
 mkdir /var/log/supervisor

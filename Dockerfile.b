@@ -1,9 +1,9 @@
 FROM romannik/bitrix:bitrix-base-new
-RUN yum install -y epel-release supervisor && yum install -y supervisor
-RUN yum -y install cifs-utils samba-client samba
 COPY entry-push.sh /root/entry-push.sh
 COPY entry-web.sh /root/entry-web.sh
-RUN chmod +x /root/entry-web.sh && chmod +x /root/entry-push.sh
+RUN yum install -y epel-release \
+    supervisor cifs-utils samba-client samba && \
+    chmod +x /root/entry-web.sh && chmod +x /root/entry-push.sh
 COPY ./bitrix/nginx-config/rtc-server.conf /etc/nginx/bx/site_enabled/rtc-server.conf
 #echo rtc-server.conf
 COPY ./bitrix/nginx-config/rtc-im_settings.conf /etc/nginx/bx/settings/rtc-im_settings.conf

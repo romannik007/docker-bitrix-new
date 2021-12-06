@@ -48,8 +48,17 @@ services:
       volumes:
         - ./bitrix/www/:/home/bitrix/www
         - ./bitrix/supervisor/web:/etc/supervisord.d
-        #- ./bitrix/ssl/privkey.pem:/etc/nginx/ssl/cert.pem
         - ./bitrix/logs/web:/var/log
+        - ./bitrix/nginx-config/rtc-server.conf:/etc/nginx/bx/site_enabled/rtc-server.conf
+        - ./bitrix/nginx-config/rtc-im_settings.conf:/etc/nginx/bx/settings/rtc-im_settings.conf
+        - ./bitrix/nginx-config/rtc-im_subscrider.conf:/etc/nginx/bx/conf/rtc-im_subscrider.conf
+        - ./bitrix/nginx-config/z_bx_custom.conf:/etc/nginx/bx/settings/z_bx_custom.conf
+        - ./bitrix/nginx-config/http-add_header.conf:/etc/nginx/bx/conf/http-add_header.conf 
+        - ./bitrix/php/php.d/z_bx_custom.ini:/etc/php.d/z_bx_custom.ini
+        - ./bitrix/php/php.d/10-opcache.ini:/etc/php.d/10-opcache.ini
+        - ./bitrix/apache/z_bx_custom.conf:/etc/httpd/bx/custom/z_bx_custom.conf
+        - ./bitrix/cron/bitrix:/etc/cron.d/bitrix
+        - ./bitrix/smb/smb.conf:/etc/samba/smb.conf
         #- ./bitrix/cron/ /etc/cron.d/
       command: ["/root/entry-web.sh"]
 
@@ -77,7 +86,8 @@ services:
       volumes:
         - ./bitrix/logs/push:/var/log
         - ./bitrix/supervisor/push:/etc/supervisord.d
-        #- ./bitrix/ssl/privkey.pem:/etc/nginx/ssl/cert.pem
+        - ./bitrix/push-config/redis.conf:/etc/redis/redis.conf
+        - ./bitrix/push-config/push-server-multi:/etc/sysconfig/push-server-multi
       command: ["/root/entry-push.sh"]
       
 
