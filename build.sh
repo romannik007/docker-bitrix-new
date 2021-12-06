@@ -18,7 +18,7 @@ docker start bitrix-new
 docker exec -ti bitrix-new sh -c "/root/bitrix-env.sh -p -H  bitrix -M $mysql_root_pass"
 #;/root/mysql.sh $mysql_root_pass;/root/menu.sh;bash
 # создание пула
-docker exec -ti bitrix-new sh -c "/opt/webdir/bin/wrapper_ansible_conf -a create -H bitrix -I eth0"
+#docker exec -ti bitrix-new sh -c "/opt/webdir/bin/wrapper_ansible_conf -a create -H bitrix -I eth0"
 # настройка пуш-сервера
 docker exec -ti bitrix-new sh -c "/opt/webdir/bin/bx-sites -a push_configure_nodejs -H bitrix"
 # настройка memcached сервиса
