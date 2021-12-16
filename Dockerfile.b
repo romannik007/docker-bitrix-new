@@ -2,7 +2,7 @@ FROM romannik/bitrix:bitrix-base-new
 COPY entry-push.sh /root/entry-push.sh
 COPY entry-web.sh /root/entry-web.sh
 RUN yum install -y epel-release \
-    supervisor cifs-utils samba-client samba && \
+    supervisor cifs-utils samba-client samba vsftpd && \
     chmod +x /root/entry-web.sh && chmod +x /root/entry-push.sh
 COPY ./bitrix/nginx-config/rtc-server.conf /etc/nginx/bx/site_enabled/rtc-server.conf
 #echo rtc-server.conf
@@ -19,8 +19,8 @@ COPY ./bitrix/nginx-config/z_bx_custom.conf /etc/nginx/bx/settings/z_bx_custom.c
 COPY ./bitrix/nginx-config/http-add_header.conf  /etc/nginx/bx/conf/http-add_header.conf 
 COPY ./bitrix/apache/z_bx_custom.conf /etc/httpd/bx/custom/z_bx_custom.conf
 COPY ./bitrix/cron/bitrix /etc/cron.d/bitrix
-COPY ./bitrix/smb/smb.conf /etc/samba
-EXPOSE 135/tcp 137/udp 138/udp 139/tcp 445/tcp
+COPY ./fs/smb/smb.conf /etc/samba
+EXPOSE 135/tcp 137/udp 138/udp 139/tcp 445/tcp 20-21/tcp
 EXPOSE 8010-8015/tcp 9010-9011/tcp 8893-8895/tcp
 #COPY ./bitrix/cron/bitrix /var/spool/cron/crontabs/bitrix
 

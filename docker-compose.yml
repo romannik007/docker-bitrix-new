@@ -58,7 +58,7 @@ services:
         - ./bitrix/php/php.d/10-opcache.ini:/etc/php.d/10-opcache.ini
         - ./bitrix/apache/z_bx_custom.conf:/etc/httpd/bx/custom/z_bx_custom.conf
         - ./bitrix/cron/bitrix:/etc/cron.d/bitrix
-        - ./bitrix/smb/smb.conf:/etc/samba/smb.conf
+        - ./fs/smb/smb.conf:/etc/samba/smb.conf
         #- ./bitrix/cron/ /etc/cron.d/
       command: ["/root/entry-web.sh"]
 

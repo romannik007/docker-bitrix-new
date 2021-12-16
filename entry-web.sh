@@ -1,7 +1,6 @@
 #!/bin/bash
 
-
-usermod bitrix --uid $USER_ID
+usermod --uid $USER_ID bitrix
 mkdir -p /tmp/php_sessions/www
 mkdir -p /tmp/php_upload/www
 chmod -R 777 /tmp/php_sessions
