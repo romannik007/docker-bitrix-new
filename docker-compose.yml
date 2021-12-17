@@ -24,7 +24,10 @@ services:
         MYSQL_PASSWORD: ${BX_MYSQL_BITRIX_PASS}
       volumes:
         - ./bitrix/mysql:/var/lib/mysql
-      command: [ '--innodb_strict_mode=OFF','--character-set-server=utf8', '--collation-server=utf8_unicode_ci', '--skip-character-set-client-handshake', '--sql-mode=', '--innodb-buffer-pool-size=256M', '--default-storage-engine=innodb', '--innodb_flush_log_at_trx_commit=0', '--innodb_lock_wait_timeout=50', '--innodb_log_buffer_size=8M', '--table_open_cache=1M', '--key_buffer_size=1M', '--sort_buffer_size=1M', '--read_buffer_size=1M', '--innodb_log_file_size=50M', '--innodb_log_buffer_size=8M' , '--tmp_table_size=32m', '--max_connections=2', '--innodb_flush_method=O_DIRECT', '--transaction-isolation=READ-COMMITTED']
+      #если нужно потюнинговать
+      #command: [ '--innodb_strict_mode=OFF','--character-set-server=utf8', '--collation-server=utf8_unicode_ci', '--skip-character-set-client-handshake', '--sql-mode=', '--innodb-buffer-pool-size=256M', '--default-storage-engine=innodb', '--innodb_flush_log_at_trx_commit=0', '--innodb_lock_wait_timeout=50', '--innodb_log_buffer_size=8M', '--table_open_cache=1M', '--key_buffer_size=1M', '--sort_buffer_size=1M', '--read_buffer_size=1M', '--innodb_log_file_size=50M', '--innodb_log_buffer_size=8M' , '--tmp_table_size=32m', '--max_connections=2', '--innodb_flush_method=O_DIRECT', '--transaction-isolation=READ-COMMITTED']
+      command: ['--innodb_strict_mode=OFF','--character-set-server=utf8', '--collation-server=utf8_unicode_ci',
+         '--skip-character-set-client-handshake', '--sql-mode=']
 
     web:
       build:
