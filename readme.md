@@ -56,11 +56,8 @@
 9. ```
     docker-compose up -d --build --force-recreate
     ```
-10. Прописываем данные для поключения к шаре windows в файле .env
-11. ```
-    docker-compose -f docker-compose-smb.yml up -d --build --force-recreate
-    ```
-12.  **копируем** bitrixsetup.php из в папку ./bitrix/www или восстанавливаем свой проект.
+
+10.   **копируем** bitrixsetup.php из в папку ./bitrix/www или восстанавливаем свой проект.
     
       ```
       chmod -R 777 bitrix/www
@@ -69,11 +66,11 @@
       в windows нет необходимости выпонять
       
 
-13.  **Если установка производится из скрипта bitrixsetup.php, то после установки сайта подменяем .settings.php из bitrix/bitrix-set/, пункты  13 и 14  не выполняем.**
+11.   **Если установка производится из скрипта bitrixsetup.php, то после установки сайта подменяем .settings.php из bitrix/bitrix-set/, пункты  13 и 14  не выполняем.**
       Данные для подключения к БД пописаны в .env
       
-14. **входим** в вэбку http://127.0.0.1/bitrixsetup.php 
-15. в файле .settings.php в проекте прописываем данные для соединения с БД: 
+12.  **входим** в вэбку http://127.0.0.1/bitrixsetup.php 
+13.  в файле .settings.php в проекте прописываем данные для соединения с БД: 
 
       *'signature_key' => 'bVQdNsrRsulOnj9lkI0sPim292jMtrnji0zzEl5MzCBeHT7w1E5HL3aihFb6aiFJfNEIDxmcFrowS3PTLZFDxAfuNNuCN5EcFRaveaUaRZHSThtWKV7Vp5vGbz9kb3cN'*
 
