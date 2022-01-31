@@ -1,6 +1,0 @@
-FROM romannik/bitrix-base-new-backup
-
-
-#COPY ./bitrix/cron/bitrix /var/spool/cron/crontabs/bitrix
-
-#echo push-server-multi
