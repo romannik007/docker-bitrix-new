@@ -1,4 +1,5 @@
-FROM romannik/bitrix:bitrix-base-new
+ARG PHP=${PHP}
+FROM romannik/bitrix:bitrix-base-new${PHP}
 COPY entry-push.sh /root/entry-push.sh
 COPY entry-web.sh /root/entry-web.sh
 RUN yum install -y epel-release \

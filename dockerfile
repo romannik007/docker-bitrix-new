@@ -1,5 +1,5 @@
 FROM centos:7
-     ADD bitrix-env.sh /root/bitrix-env.sh
+     ADD bitrix-env.sh.1 /root/bitrix-env.sh
      ADD mysql.sh /root/mysql.sh
      RUN chmod +x /root/bitrix-env.sh && \
           yum -y install mc
