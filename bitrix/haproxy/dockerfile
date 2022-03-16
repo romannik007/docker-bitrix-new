@@ -1,0 +1,5 @@
+FROM haproxy:alpine
+USER root
+RUN apk add mysql-client
+EXPOSE 3306
+#USER haproxy

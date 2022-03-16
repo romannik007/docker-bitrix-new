@@ -1,5 +1,21 @@
 version: '3.8'
 services:
+    haproxy:
+      build:
+        context: ./bitrix/haproxy
+      ports:
+        - 3307:3306
+        #вэб статистика
+        - 8404:8404
+      
+      restart:
+        unless-stopped 
+      volumes:
+        - ./bitrix/haproxy/haproxy.conf:/usr/local/etc/haproxy/haproxy.cfg
+      networks:
+        - bitrix
+
+
     mysql:
       #image: percona/percona-server:5.7
       image: ${BX_DB_SERVER}
