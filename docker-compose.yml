@@ -110,7 +110,22 @@ services:
         - ./bitrix/push-config/redis.conf:/etc/redis/redis.conf
         - ./bitrix/push-config/push-server-multi:/etc/sysconfig/push-server-multi
       command: ["/root/entry-push.sh"]
-      
+  
+    phpmyadmin:
+      image: phpmyadmin/phpmyadmin:latest
+      ports:
+        - 33333:80
+      networks:
+        - bitrix
+      environment:
+ #      PMA_ARBITRARY: 1
+        PMA_HOST: mysql
+        PMA_PORT: 3306
+        PMA_USER: root
+        PMA_PASSWORD: $BX_MYSQL_ROOT_PASS
+#       PMA_ABSOLUTE_URI: /phpmyadmin
+
+
 
 
 networks:
