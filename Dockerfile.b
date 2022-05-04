@@ -3,7 +3,8 @@ FROM romannik/bitrix:bitrix-base-new${PHP}
 COPY entry-push.sh /root/entry-push.sh
 COPY entry-web.sh /root/entry-web.sh
 RUN yum install -y epel-release \
-    supervisor cifs-utils samba-client samba vsftpd && \
+    supervisor cifs-utils samba-client samba vsftpd \
+    php-gd && \
     chmod +x /root/entry-web.sh && chmod +x /root/entry-push.sh
 COPY ./bitrix/nginx-config/rtc-server.conf /etc/nginx/bx/site_enabled/rtc-server.conf
 #echo rtc-server.conf
