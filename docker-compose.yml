@@ -1,6 +1,8 @@
 version: '3.8'
 services:
     haproxy:
+      profiles:
+        - haproxy
       build:
         context: ./bitrix/haproxy
       ports:
