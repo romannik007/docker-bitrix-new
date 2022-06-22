@@ -4,8 +4,8 @@ COPY entry-push.sh /root/entry-push.sh
 COPY entry-web.sh /root/entry-web.sh
 RUN yum install -y epel-release \
     supervisor cifs-utils samba-client samba vsftpd \
-    php-gd php-pecl-redis && \
-    chmod +x /root/entry-web.sh && chmod +x /root/entry-push.sh
+    php-devel php-gd php-xdebug php-pecl-redis && \
+    chmod +x /root/entry-web.sh /root/entry-push.sh /usr/lib64/php/modules/xdebug.so
 COPY ./bitrix/nginx-config/rtc-server.conf /etc/nginx/bx/site_enabled/rtc-server.conf
 #echo rtc-server.conf
 COPY ./bitrix/nginx-config/rtc-im_settings.conf /etc/nginx/bx/settings/rtc-im_settings.conf
