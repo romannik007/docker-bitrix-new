@@ -7,5 +7,6 @@ chmod -R 777 /var/log/supervisor
 mkdir /var/log/redis
 chmod -R 777 /var/log/redis
 rm -f /var/log/*.pid
+chmod -R 777 /var/log
 
 exec /usr/bin/supervisord # -c /etc/supervisor.d/supervisord.conf

@@ -20,5 +20,7 @@ mkdir -p /var/log/crond
 mkdir -p /var/log/httpd
 mkdir -p /var/log/nginx
 mkdir -p /var/log/samba
+mkdir -p /var/log/xdebug
+chmod -R 777 /var/log
 mount -t cifs //$4/$5 /home/bitrix/www -o username=$1,password=$2,domain=$3,dir_mode=0777,file_mode=0777,sec=ntlmv2
 exec /usr/bin/supervisord #-c /etc/supervisor.d/supervisord.conf

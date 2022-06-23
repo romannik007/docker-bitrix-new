@@ -36,6 +36,7 @@ services:
         dockerfile: Dockerfile.b
         args: 
           PHP: $PHP
+      env_file: .env
       #image: romannik/bitrix:bitrix-base-new
       #container_name: bx-web
       hostname: bitrix
@@ -43,6 +44,7 @@ services:
         - 80:80
         - 8893-8895:8893-8895/tcp
         - 443:443
+        - 9000:9000
       networks:
         - bitrix
 #          ipv4_address: 172.16.16.4
@@ -51,6 +53,12 @@ services:
         - push
       environment:
         USER_ID: $USER_ID
+        PHP_IDE_CONFIG: ${IDE_SERVER_NAME:-project}
+        XDEBUG_MODE: ${XDEBUG_MODE:-off}
+        XDEBUG_CLIENT_HOST: ${XDEBUG_CLIENT_HOST:-localhost}
+        XDEBUG_CLIENT_PORT: ${XDEBUG_CLIENT_PORT:-9003}
+        XDEBUG_IDEKEY: ${XDEBUG_IDEKEY:-""}
+        XDEBUG_OUTPUT_DIR: ${XDEBUG_OUTPUT_DIR}
       volumes:
         - ./bitrix/www/:/home/bitrix/www
         - ./bitrix/supervisor/web:/etc/supervisord.d
