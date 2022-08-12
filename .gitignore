@@ -29,3 +29,4 @@ bitrix-base-new-mysql-backup*
 *.gz
 bitrix/ssl
 !bitrix/ssl/.gitkeep
+.vscode/sftp.json
