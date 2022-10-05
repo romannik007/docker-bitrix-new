@@ -1,10 +1,35 @@
 ARG PHP=${PHP}
-FROM romannik/bitrix:bitrix-base-new${PHP}
-RUN yum install -y epel-release \
+FROM romannik/bitrix:bitrix-base-new${PHP} 
+RUN yum install -y epel-release  \
     supervisor cifs-utils samba-client samba vsftpd \
-    php-devel php-gd php-pecl-redis && \
+    php-devel php-gd php-pecl-redis \
+    wget lsb boost-devel boost sqlite-devel && \
+    yum group install -y "Development Tools" && \
     pecl install xdebug
-    
+COPY bitrix/cryptopro/linux-amd64 /linux-amd64
+RUN cd /linux-amd64 && \
+    ./install.sh && \
+    yum install -y lsb-cprocsp-devel* \
+        cprocsp-pki-cades* \
+        cprocsp-pki-phpcades* \
+        cprocsp-legacy-*
+
+#add php_CPCSP
+RUN wget https://www.php.net/distributions/php-7.4.29.tar.gz -O /php.tar.gz && \
+    tar xvzf /php.tar.gz && \
+    cd /php-7.4.29 && \
+    ./configure --prefix=/opt/php
+
+COPY bitrix/cryptopro/php7_support.patch/php7_support.patch /opt/cprocsp/src/phpcades/php7_support.patch
+
+RUN sed -i "s/PHPDIR=\/php/PHPDIR=\/php-7.4.29/g" /opt/cprocsp/src/phpcades/Makefile.unix && \
+    sed -i 's!-fPIC -DPIC!-fPIC -DPIC -fpermissive!1' /opt/cprocsp/src/phpcades/Makefile.unix && \
+    cd /opt/cprocsp/src/phpcades && \
+    patch -p0 < ./php7_support.patch && \
+    cd /opt/cprocsp/src/phpcades && eval `/opt/cprocsp/src/doxygen/CSP/../setenv.sh --64`; make -f Makefile.unix && \
+    ln -s /opt/cprocsp/src/phpcades/libphpcades.so /usr/lib64/php/modules/libphpcades.so;\
+    ldconfig
+
 COPY ./bitrix/nginx-config/rtc-server.conf /etc/nginx/bx/site_enabled/rtc-server.conf
 #echo rtc-server.conf
 COPY ./bitrix/nginx-config/rtc-im_settings.conf /etc/nginx/bx/settings/rtc-im_settings.conf
@@ -28,4 +53,7 @@ EXPOSE 135/tcp 137/udp 138/udp 139/tcp 445/tcp 20-21/tcp
 EXPOSE 8010-8015/tcp 9010-9011/tcp 8893-8895/tcp
 #COPY ./bitrix/cron/bitrix /var/spool/cron/crontabs/bitrix
 
-#echo push-server-multi
+
+
+
+
