@@ -1,11 +1,11 @@
-ARG PHP=${PHP}
-FROM romannik/bitrix:bitrix-base-new${PHP} 
+ARG PHP
+FROM romannik/bitrix:bitrix-base-new${PHP}
+ARG PHP
 RUN yum install -y epel-release  \
     supervisor cifs-utils samba-client samba vsftpd \
     php-devel php-gd php-pecl-redis \
     wget lsb boost-devel boost sqlite-devel && \
-    yum group install -y "Development Tools" && \
-    pecl install xdebug
+    yum group install -y "Development Tools" php-xdebug
 COPY bitrix/cryptopro/linux-amd64 /linux-amd64
 RUN cd /linux-amd64 && \
     ./install.sh && \
@@ -15,7 +15,7 @@ RUN cd /linux-amd64 && \
         cprocsp-legacy-*
 
 #add php_CPCSP
-RUN wget https://www.php.net/distributions/php-7.4.29.tar.gz -O /php.tar.gz && \
+RUN wget --no-check-certificate https://www.php.net/distributions/php-7.4.29.tar.gz -O /php.tar.gz && \
     tar xvzf /php.tar.gz && \
     cd /php-7.4.29 && \
     ./configure --prefix=/opt/php
